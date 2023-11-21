@@ -1,0 +1,12 @@
+.stats-screen-level {
+  &__digits {
+    display: flex;
+    gap: 0.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  span {
+    color: $color-br-active;
+    text-transform: uppercase;
+  }
+}

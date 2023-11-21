@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with Vectornator (http://vectornator.io/) -->
+<svg stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="0 0 48 88" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs/>
+<clipPath id="ArtboardFrame">
+<rect height="88" width="48" x="0" y="0"/>
+</clipPath>
+<g clip-path="url(#ArtboardFrame)" id="layer2">
+<path d="M6 4L10 0L38 0L42 4L38 8L10 8L6 4Z" fill-rule="evenodd" opacity="1" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.8"/>
+<path d="M4 6L8 10L8 38L4 42L0 38L0 10L4 6Z" fill-rule="evenodd" opacity="1" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.8"/>
+<path d="M44 6L48 10L48 38L44 42L40 38L40 10L44 6Z" fill-rule="evenodd" opacity="1" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.8"/>
+<path d="M6 44L10 40L38 40L42 44L38 48L10 48L6 44Z" fill-rule="evenodd" opacity="1" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.8"/>
+<path d="M4 46L8 50L8 78L4 82L0 78L0 50L4 46Z" fill-rule="evenodd" opacity="1" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.8"/>
+<path d="M44 46L48 50L48 78L44 82L40 78L40 50L44 46Z" fill-rule="evenodd" opacity="1" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.8"/>
+<path d="M6 84L10 80L38 80L42 84L38 88L10 88L6 84Z" fill-rule="evenodd" opacity="1" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.8"/>
+</g>
+</svg>

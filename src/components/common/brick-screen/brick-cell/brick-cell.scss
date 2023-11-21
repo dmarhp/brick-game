@@ -1,0 +1,45 @@
+brick-cell {
+  display: flex;
+  width: 1rem;
+  height: 1rem;
+  padding: 1px;
+  box-sizing: border-box;
+  background-color: $color-br-background;
+  
+  div {
+    background-color: $color-br-inactive;
+  }
+
+  .brick-cell__border {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brick-cell__center {
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    border: 2px solid $color-br-background;
+  }
+
+  &[active] {
+    div {
+      background-color: $color-br-active;
+    }
+
+    &[blinking] div {
+      animation: blinkAnimation 0.5s infinite alternate;
+    }
+  }
+
+  @keyframes blinkAnimation {
+    0% {
+      background-color: $color-br-inactive;
+    }
+    50% {
+      background-color: $color-br-active;
+    }
+  }
+}

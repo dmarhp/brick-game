@@ -1,0 +1,17 @@
+brick-screen {
+  background-color: $color-br-background;
+  display: inline-flex;
+  flex-direction: column;
+  
+  .brick-screen-row {
+    display: flex;
+  }
+  
+  &[showBlinkingCells] {
+    brick-cell {
+      &.blink div {
+        background-color: #2dd36f;
+      }
+    }
+  }
+}

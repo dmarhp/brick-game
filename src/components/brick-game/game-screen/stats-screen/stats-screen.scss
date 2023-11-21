@@ -1,0 +1,13 @@
+.stats-screen {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 6rem;
+  background-color: $color-br-background;
+  align-items: center;
+  
+  &__speed-level {
+    display: flex;
+    justify-content: space-between;
+  }
+}
