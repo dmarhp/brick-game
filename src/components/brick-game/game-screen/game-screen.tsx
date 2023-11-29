@@ -16,8 +16,15 @@ export class GameScreen {
       return;
     }
 
-    this.brickScreenRef.style.height = `${SCREEN_HEIGHT}rem`;
-    this.brickScreenRef.style.width = `${SCREEN_WIDTH}rem`;
+    this.brickScreenRef.style.height = this.getScreenSizeInPixels(SCREEN_HEIGHT);
+    this.brickScreenRef.style.width = this.getScreenSizeInPixels(SCREEN_WIDTH);
+  }
+  
+  getScreenSizeInPixels(cells: number) {
+    const gaps = (cells - 1) * 2;
+    const cellsSize = cells * 14;
+    return `${gaps + cellsSize}px`
+
   }
 
   renderGame() {

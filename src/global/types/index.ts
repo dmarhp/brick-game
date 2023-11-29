@@ -51,3 +51,9 @@ export enum GameStatus {
 }
 
 export type Letter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
+
+export enum Icon {
+  Music = 'music',
+  Pause = 'pause',
+  Poo = 'poo'
+}

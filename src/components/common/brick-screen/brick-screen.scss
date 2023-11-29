@@ -2,9 +2,11 @@ brick-screen {
   background-color: $color-br-background;
   display: inline-flex;
   flex-direction: column;
+  gap: 2px;
   
   .brick-screen-row {
     display: flex;
+    gap: 2px;
   }
   
   &[showBlinkingCells] {

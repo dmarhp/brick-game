@@ -1,13 +1,41 @@
 .stats-screen {
-  padding: 1rem;
+  padding: 8px 14px;
   display: flex;
   flex-direction: column;
   width: 6rem;
   background-color: $color-br-background;
-  align-items: center;
+  justify-content: space-between;
   
-  &__speed-level {
+  &__main-controls {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  &__speed-and-level {
+    display: flex;
+    gap: 8px;
+  }
+
+  icon-provider {
+    width: 60px;
+    height: 60px;
+    fill: $color-br-inactive;
+
+    &.active {
+      fill: $color-br-active;
+    }
+  }
+
+  &__music-and-pause {
+    display: inline-flex;
+    justify-content: center;
+    gap: 14px;
+
+    icon-provider {
+      width: 28px;
+      height: 28px;
+    }
   }
 }

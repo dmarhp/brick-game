@@ -23,6 +23,10 @@ export class StatsScreenScore {
   render() {
     return (
       <Host>
+        <div class="score-label">
+          <span data-active={(this.mode === 'hi-score').toString()}>HI-</span>
+          <span>SCORE</span>
+        </div>
         <div class={"score-digits"}>
           {this.getScoreDigitsArray().map((d, i) => (
             <seven-segment-digit
@@ -30,10 +34,6 @@ export class StatsScreenScore {
               key={`score-digits-${i}`}
             />
           ))}
-        </div>
-        <div class="score-label">
-          <span data-active={(this.mode === 'hi-score').toString()}>HI-</span>
-          <span>SCORE</span>
         </div>
       </Host>
     );

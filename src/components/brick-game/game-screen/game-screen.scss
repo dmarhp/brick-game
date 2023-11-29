@@ -3,16 +3,19 @@ game-screen {
   width: 100%;
   justify-content: center;
   background-color: red;
-  
+
   .game-screen-wrapper {
-    padding: 3px 0 3px 3px;
+    padding: 8px 0 8px 8px;
     background-color: $color-br-background;
     display: flex;
-    
+
     .brick-screen-wrapper {
-      border: 2px solid $color-br-active;
+      border: 1.5px solid $color-br-active;
       padding: 5px;
-      margin: 3px 0 3px 3px;
     }
+  }
+
+  select-game, game-snake, game-tanks, game-racing {
+    display: flex;
   }
 }

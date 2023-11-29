@@ -1,14 +1,18 @@
 stats-screen-score {
   .score-digits {
     display: flex;
-    gap: 0.3rem;
-    margin-bottom: 0.5rem;
+    gap: 4px;
   }
-  
+
   .score-label {
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: center;
+
     span {
       color: $color-br-active;
       text-transform: uppercase;
+
       &[data-active = 'false'] {
         color: $color-br-inactive;
       }

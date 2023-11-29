@@ -10,13 +10,7 @@ export class BrickCell {
   
   render() {
     return (
-      <Host
-        active={this.active}
-      >
-        <div class="brick-cell__border">
-          <div class="brick-cell__center"/>
-        </div>
-      </Host>
+      <Host active={this.active}/>
     );
   }
 }
