@@ -5,11 +5,11 @@ export interface ICell {
 }
 
 export enum Direction {
-  None = 'none',
-  Up = 'up',
-  Down = 'down',
-  Left = 'left',
-  Right = 'right'
+  None = 0,
+  Up = 1,
+  Down = 2,
+  Left = 3,
+  Right = 4
 }
 
 export enum ControlButton {
@@ -19,8 +19,8 @@ export enum ControlButton {
   Left = 'left',
   Right = 'right',
   Rotate = 'rotate',
-  
-  Pause  = 'pause',
+
+  Pause = 'pause',
 }
 
 export enum Game {
