@@ -10,14 +10,14 @@ export class StatsScreen {
   @Prop() score: number;
 
   render() {
-    const {pause, music, score} = statsStore.state;
+    const {pause, music, score, bricks} = statsStore.state;
 
     return (
       <Host class="stats-screen">
         <div class="stats-screen__main-controls">
           <stats-screen-score score={score}/>
 
-          <brick-screen width={4} height={4}/>
+          <brick-screen width={4} height={4} activeCells={bricks}/>
 
           <div class="stats-screen__speed-and-level">
             <stats-screen-level/>

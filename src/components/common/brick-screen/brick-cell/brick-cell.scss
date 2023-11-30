@@ -13,25 +13,19 @@ brick-cell {
     margin: auto;
     background-color: $color-br-inactive;
   }
+  
+  &[highlighted] {
+    border-color: $color-br-highlighted;
+    &:after {
+      background-color: $color-br-highlighted;
+    }
+  }
 
   &[active] {
     border-color: $color-br-active;
 
     &:after {
       background-color: $color-br-active;
-    }
-
-    &[blinking] {
-      animation: blinkAnimation 0.5s infinite alternate;
-    }
-  }
-
-  @keyframes blinkAnimation {
-    0% {
-      border-color: $color-br-inactive;
-    }
-    50% {
-      border-color: $color-br-active;
     }
   }
 }

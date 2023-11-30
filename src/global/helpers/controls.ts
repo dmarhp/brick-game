@@ -1,11 +1,12 @@
 import {ControlButton, Direction} from "@global/types";
+import {directionHelpers} from "@global/helpers/direction";
 
 const getDirectionAfterButtonClick = (button: ControlButton, currentDirection: Direction) => {
   if (!isDirectionButton(button)) {
     return currentDirection;
   }
   const newDirection = getDirectionFromControlButton(button);
-  const isOpposite = isNewDirectionOpposite(currentDirection, newDirection);
+  const isOpposite = directionHelpers.isOpposite(currentDirection, newDirection);
   return isOpposite ? currentDirection : newDirection;
 }
 
@@ -31,16 +32,6 @@ const isDirectionButton = (button: ControlButton) => {
     ControlButton.Right,
     ControlButton.Down
   ].includes(button);
-}
-
-const isNewDirectionOpposite = (currentDir: Direction, newDir: Direction) => {
-  const oppositeDirections: [Direction, Direction][] = [
-    [Direction.Up, Direction.Down],
-    [Direction.Down, Direction.Up],
-    [Direction.Left, Direction.Right],
-    [Direction.Right, Direction.Left]
-  ];
-  return oppositeDirections.some(([dir1, dir2]) => currentDir === dir1 && newDir === dir2);
 }
 
 export const controlsHelpers = {

@@ -5,7 +5,7 @@ interface IStatsStore {
   score: number;
   level: number;
   speed: number;
-  bricks: ICell[][];
+  bricks: ICell[];
   gameStatus: GameStatus;
   music: boolean;
   pause: boolean;

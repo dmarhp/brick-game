@@ -10,6 +10,7 @@ import {cellHelpers} from "@global/helpers/cells";
 export class BrickScreen {
   private interval: any;
   @Prop() activeCells: ICell[] = [];
+  @Prop() highlightedCells: ICell[] = [];
   @Prop() height = SCREEN_HEIGHT;
   @Prop() width = SCREEN_WIDTH;
   @State() showBlinkingCells = true;
@@ -27,7 +28,7 @@ export class BrickScreen {
   renderCell({x, y}: ICell) {
     let isActive = this.activeCells?.some(c => c?.x === x && c?.y === y) || false;
     const isBlinking = this.activeCells?.some(c => c?.x === x && c?.y === y && c?.blink) || false;
-
+    const highlighted = this.highlightedCells?.some(c => c?.x === x && c?.y === y) || false;
     if (isActive && isBlinking) {
       isActive = this.showBlinkingCells;
     }
@@ -35,6 +36,7 @@ export class BrickScreen {
     return (
       <brick-cell
         active={isActive}
+        highlighted={highlighted}
         key={`cell_${x}_${y}`}
       />
     );

@@ -4,12 +4,13 @@ export interface ICell {
   blink?: boolean;
 }
 
+// don't change values!
 export enum Direction {
   None = 0,
   Up = 1,
-  Down = 2,
-  Left = 3,
-  Right = 4
+  Right = 2,
+  Down = 3,
+  Left = 4
 }
 
 export enum ControlButton {
@@ -28,6 +29,7 @@ export enum Game {
   Snake,
   Racing,
   Tanks,
+  Tetris,
   LockedGame,
 }
 

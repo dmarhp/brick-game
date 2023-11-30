@@ -1,21 +1,6 @@
-import {Direction, ICell} from "@global/types";
+import {ICell} from "@global/types";
 import statsStore from "../../../../../stores/stats-store";
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
-
-const getHeadCoordinatesAfterMove = ({x, y}: ICell, direction: Direction) => {
-  switch (direction) {
-    case Direction.Down:
-      return {x, y: y - 1};
-    case Direction.Up:
-      return {x, y: y + 1};
-    case Direction.Left:
-      return {x: x - 1, y}
-    case Direction.Right:
-      return {x: x + 1, y}
-    default:
-      return {x, y};
-  }
-}
 
 const getInitialSnake = (): ICell[] => {
   const x = Math.round((SCREEN_WIDTH / 2) - 2);
@@ -34,7 +19,6 @@ const getSnakeMoveInterval = () => {
 }
 
 export default {
-  getHeadCoordinatesAfterMove,
   getInitialSnake,
   getSnakeMoveInterval
 }

@@ -66,7 +66,7 @@ export class GameRacing {
       return;
     }
     
-    if (!globalStore.state.isPause) {
+    if (!statsStore.state.pause) {
       setTimeout(() => this.drive(), this.moveInterval);
     }
   }

@@ -1,9 +1,9 @@
 import {Component, h, Listen, State, Watch} from "@stencil/core";
 import {ControlButton, ICell} from "@global/types";
 import {GAME_CATALOG} from "@global/constants";
-import {getBrickLetter} from "@global/helpers/brick-letters";
-import {getBrickNumber} from "@global/helpers/brick-numbers";
-import {getGamePreview} from "@global/helpers/game-preview";
+import {getBrickLetter} from "@global/helpers/select-game/brick-letters";
+import {getBrickNumber} from "@global/helpers/select-game/brick-numbers";
+import {getGamePreview} from "@global/helpers/select-game/game-preview";
 import globalStore from "../../../../stores/global-store";
 
 @Component({

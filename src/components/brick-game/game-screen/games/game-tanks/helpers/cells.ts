@@ -1,7 +1,7 @@
 import {ITank} from "../types";
 import {Direction, ICell} from "@global/types";
-import {cellHelpers} from "@global/helpers/cells";
 import store from "../../../../../../stores/game-tanks-store";
+import {objectHelpers} from "@global/helpers/objects";
 
 const getTankWithDownDirection = ({x, y, isPlayer}: ITank): ICell[] => {
   const tankCells: ICell[] = [
@@ -92,10 +92,6 @@ const getTank = (tank: ITank): ICell[] => {
   return tankCells;
 }
 
-const isOutsideScreen = ({cells}: ITank) => {
-  return cells.some(cellHelpers.isCellOutsideScreen);
-}
-
 const isSomeCellTakenByOtherTanks = ({cells}: ITank, tanks: ITank[]) => {
   const otherTanksCells = tanks.map(t => t.cells || []).flat();
   return cells.some((c) => otherTanksCells.some(({x, y}) => c.x === x && c.y === y));
@@ -103,7 +99,7 @@ const isSomeCellTakenByOtherTanks = ({cells}: ITank, tanks: ITank[]) => {
 
 const canBePlaced = (tank: ITank) => {
 
-  if (isOutsideScreen(tank)) {
+  if (!objectHelpers.isVisible(tank.cells)) {
     return false;
   }
 
@@ -120,7 +116,6 @@ const canBePlaced = (tank: ITank) => {
 
 export const tankCellHelpers = {
   getTank,
-  isOutsideScreen,
   isSomeCellTakenByOtherTanks,
-  canBePlaced,
+  canBePlaced
 }

@@ -1,11 +1,12 @@
 import {EnemyMoveType, IBullet, ITank} from "../types";
-import {objectsHelpers} from "@global/helpers/objects";
+import {objectHelpers} from "@global/helpers/objects";
 import {Direction} from "@global/types";
 import {gameHelpers} from "@global/helpers/game";
 import {tankCellHelpers} from "./cells";
 import store from "../../../../../../stores/game-tanks-store";
 import {cellHelpers} from "@global/helpers/cells";
 import {nanoid} from 'nanoid'
+import {directionHelpers} from "@global/helpers/direction";
 
 const getEnemyMoveType = (): EnemyMoveType => {
   return Math.random() < 0.67 ? 1 : 2;
@@ -14,13 +15,13 @@ const getEnemyMoveType = (): EnemyMoveType => {
 const moveEnemy = (enemy: ITank) => {
   const moveType = getEnemyMoveType();
   let newDirection = moveType === EnemyMoveType.Rotate
-    ? objectsHelpers.getRandomDirection()
+    ? directionHelpers.getRandom()
     : null;
 
   let updatedEnemy = moveTank(enemy, newDirection);
 
   if (cellHelpers.compareTwoCellArrays(updatedEnemy.cells, enemy.cells)) {
-    newDirection = objectsHelpers.getRandomDirection();
+    newDirection = directionHelpers.getRandom();
     updatedEnemy = moveTank(enemy, newDirection);
   }
   return updatedEnemy;
@@ -37,7 +38,7 @@ const moveTank = (tank: ITank, direction: Direction = null) => {
     updatedTank.direction = direction;
     updatedTank.cells = tankCellHelpers.getTank(updatedTank);
   } else {
-    const {x, y} = objectsHelpers.moveObject(tank) as ITank;
+    const {x, y} = cellHelpers.move(tank, tank.direction);
     updatedTank.x = x;
     updatedTank.y = y;
     updatedTank.cells = tankCellHelpers.getTank(updatedTank);
@@ -52,7 +53,7 @@ const moveTank = (tank: ITank, direction: Direction = null) => {
 
 const placeNewEnemy = () => {
   const {x, y} = cellHelpers.getRandomCell();
-  const direction = objectsHelpers.getRandomDirection();
+  const direction = directionHelpers.getRandom();
   const enemy: ITank = {x, y, direction};
   enemy.cells = tankCellHelpers.getTank(enemy);
 
@@ -60,7 +61,7 @@ const placeNewEnemy = () => {
   const otherTanks = [...enemies, player];
   const isSomeCellsTakenByOtherTanks = tankCellHelpers.isSomeCellTakenByOtherTanks(enemy, otherTanks);
 
-  if (!tankCellHelpers.isOutsideScreen(enemy) && !isSomeCellsTakenByOtherTanks) {
+  if (objectHelpers.isVisible(enemy.cells) && !isSomeCellsTakenByOtherTanks) {
     enemy.id = nanoid();
     store.state.enemies.push(enemy);
   } else {
@@ -70,7 +71,7 @@ const placeNewEnemy = () => {
 
 const moveBullet = (bullet: IBullet) => {
   const {enemies} = store.state;
-  const {x, y} = objectsHelpers.moveObject(bullet)
+  const {x, y} = cellHelpers.move(bullet, bullet.direction);
 
   const updatedBullet = {...bullet, x, y};
   const destroyedEnemy = enemies.find(({cells}) => cells.some(c => c.x === x && c.y === y));

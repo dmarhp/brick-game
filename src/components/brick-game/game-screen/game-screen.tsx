@@ -36,6 +36,8 @@ export class GameScreen {
         return <game-racing/>;
       case Game.Tanks:
         return <game-tanks/>;
+      case Game.Tetris:
+        return <game-tetris/>;
       case Game.None:
         return <select-game/>;
       default:

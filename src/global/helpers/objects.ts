@@ -1,29 +1,33 @@
-import {Direction} from "@global/types";
+import {Direction, ICell} from "@global/types";
+import {cellHelpers} from "@global/helpers/cells";
 
-const getRandomDirection = (): Direction => {
-  return Math.floor(Math.random() * 4) + 1;
+const isIntersecting = (obj1: ICell[], obj2: ICell[]) => {
+  return obj1.some(c1 => obj2.some(c2 => c1.x === c2.x && c1.y === c2.y));
 }
 
-const moveObject = ({x, y, direction}: { x: number, y: number, direction: Direction }) => {
-  switch (direction) {
-    case Direction.Up:
-      y++;
-      break;
-    case Direction.Down:
-      y--;
-      break;
-    case Direction.Left:
-      x--;
-      break;
-    case Direction.Right:
-      x++;
-      break;
-  }
-
-  return {x, y};
+const isObjectCell = (obj: ICell[], cell: ICell) => {
+  return obj.some(({x, y}) => cell.x === x && cell.y === y);
 }
 
-export const objectsHelpers = {
-  getRandomDirection,
-  moveObject
+const isVisible = (cells: ICell[]) => {
+  return cells.every(cellHelpers.isVisible);
+}
+
+const isVisibleOrAbove = (cells: ICell[]) => {
+  return cells.every(cellHelpers.isVisibleOrAbove);
+}
+
+const move = (obj: ICell[], direction: Direction, distance: number = 1) => {
+  return obj.map(c => {
+    const {x, y} = cellHelpers.move(c, direction, distance);
+    return {...c, x, y} as ICell;
+  });
+}
+
+export const objectHelpers = {
+  isIntersecting,
+  isObjectCell,
+  isVisible,
+  isVisibleOrAbove,
+  move,
 }

@@ -1,7 +1,8 @@
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
-import {ICell} from "@global/types";
+import {Direction, ICell} from "@global/types";
 import {CarPosition, IRacingBorders, IRacingCompetitorCar} from "./types";
 import statsStore from "../../../../../stores/stats-store";
+import {cellHelpers} from "@global/helpers/cells";
 
 const BORDER_PATTERN = [true, true, true, false, false];
 const COMPETITOR_DISTANCE = 4;
@@ -36,7 +37,7 @@ const moveBorder = (border: ICell[]) => {
     shiftedCell.y = SCREEN_HEIGHT;
     border.push(shiftedCell);
   }
-  return border.map(c => ({...c, y: c.y - 1}));
+  return border.map(c => cellHelpers.move(c, Direction.Down));
 }
 
 const getCar = (position = CarPosition.Left, offsetY = 0, blink = false): ICell[] => {

@@ -60,7 +60,7 @@ const tanks: ICell[] = [
   {y: offsetY - 1, x: 4},
   {y: offsetY - 1, x: 5},
   {y: offsetY - 2, x: 4},
-  
+
   // tank2:
   {y: offsetY - 4, x: SCREEN_WIDTH - 5},
   {y: offsetY - 5, x: SCREEN_WIDTH - 5},
@@ -70,6 +70,40 @@ const tanks: ICell[] = [
   {y: offsetY - 7, x: SCREEN_WIDTH - 6},
   {y: offsetY - 7, x: SCREEN_WIDTH - 4},
 ];
+
+const tetris: ICell[] = [
+  {y: offsetY - 7, x: 0},
+  {y: offsetY - 7, x: 1},
+  {y: offsetY - 7, x: 2},
+  {y: offsetY - 7, x: 4},
+  {y: offsetY - 7, x: 5},
+  {y: offsetY - 7, x: 6},
+  {y: offsetY - 7, x: 7},
+  {y: offsetY - 7, x: 8},
+  {y: offsetY - 7, x: 9},
+
+  {y: offsetY - 6, x: 0},
+  {y: offsetY - 6, x: 1},
+  {y: offsetY - 6, x: 2},
+  {y: offsetY - 6, x: 5},
+  {y: offsetY - 6, x: 6},
+  {y: offsetY - 6, x: 7},
+  {y: offsetY - 6, x: 8},
+  {y: offsetY - 6, x: 9},
+
+  {y: offsetY - 5, x: 0},
+  {y: offsetY - 5, x: 1},
+  {y: offsetY - 5, x: 6},
+  {y: offsetY - 5, x: 9},
+
+  {y: offsetY - 4, x: 0},
+
+  {y: offsetY - 2, x: 3},
+  {y: offsetY - 1, x: 3},
+  {y: offsetY - 0, x: 2},
+  {y: offsetY - 0, x: 3},
+
+]
 
 const lock: ICell[] = [
   {x: screenCenter - 2, y: offsetY - 0},
@@ -125,6 +159,8 @@ export const getGamePreview = (game: Game): ICell[] => {
       return snake;
     case Game.Tanks:
       return tanks;
+    case Game.Tetris:
+      return tetris
     case Game.LockedGame:
       return lock;
     default:

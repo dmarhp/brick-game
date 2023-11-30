@@ -6,6 +6,7 @@ import {cellHelpers} from "@global/helpers/cells";
 import {controlsHelpers} from "@global/helpers/controls";
 import globalStore from "../../../../../stores/global-store";
 import {gameHelpers} from "@global/helpers/game";
+import {objectHelpers} from "@global/helpers/objects";
 
 @Component({
   tag: 'game-snake',
@@ -20,7 +21,8 @@ export class GameSnake {
 
   @Listen('controlButtonClick', {target: 'window'})
   controlButtonClickHandler({detail}: CustomEvent<ControlButton>) {
-    const {isPause, gameStatus} = globalStore.state;
+    const {gameStatus} = globalStore.state;
+    const {pause} = statsStore.state;
 
     if (!controlsHelpers.isDirectionButton(detail)) {
       if (detail === ControlButton.Rotate && gameHelpers.isFinished()) {
@@ -33,8 +35,8 @@ export class GameSnake {
       return;
     }
     this.direction = newDirection;
-      
-    if (controlsHelpers.isDirectionButton(detail) && (isPause || gameStatus === GameStatus.NewGame)) {
+
+    if (controlsHelpers.isDirectionButton(detail) && (pause || gameStatus === GameStatus.NewGame)) {
       globalStore.state.gameStatus = GameStatus.Play;
       this.moveSnake();
     }
@@ -43,10 +45,10 @@ export class GameSnake {
 
   componentWillLoad() {
     statsStore.onChange('score', this.updateMoveInterval.bind(this));
-    globalStore.onChange('isPause', this.pauseHandler.bind(this));
+    statsStore.onChange('pause', this.pauseHandler.bind(this));
     this.startNewGame();
   }
-  
+
   startNewGame() {
     this.snake = helpers.getInitialSnake();
     this.placeNewMouse();
@@ -54,21 +56,20 @@ export class GameSnake {
   }
 
   pauseHandler() {
-    if (!globalStore.state.isPause) {
+    if (!statsStore.state.pause) {
       this.moveSnake();
     }
   }
 
   moveSnake() {
-    if (this.direction === Direction.None || globalStore.state.isPause) {
+    if (this.direction === Direction.None || statsStore.state.pause) {
       return;
     }
 
-    const newHead = helpers.getHeadCoordinatesAfterMove(this.snake[0], this.direction);
-    const isSnakeCrossed = this.snake.some(c => cellHelpers.compareTwoCells(c, newHead));
-    const isSnakeMovedOutOfScreen = cellHelpers.isCellOutsideScreen(newHead);
+    const newHead = cellHelpers.move(this.snake[0], this.direction);
+    const isSnakeCrossed = objectHelpers.isObjectCell(this.snake, newHead);
 
-    if (isSnakeCrossed || isSnakeMovedOutOfScreen) {
+    if (isSnakeCrossed || !cellHelpers.isVisible(newHead)) {
       this.direction = Direction.None;
       globalStore.state.gameStatus = GameStatus.Lose;
       this.snake = this.snake.map(c => ({...c, blink: true}));
@@ -77,6 +78,7 @@ export class GameSnake {
 
     const ateMouse = cellHelpers.compareTwoCells(newHead, this.mouse);
     const updatedSnake = [newHead, ...this.snake];
+
     if (!ateMouse) {
       updatedSnake.pop();
     }
@@ -86,8 +88,10 @@ export class GameSnake {
       statsStore.state.score++;
       this.placeNewMouse();
     }
+
     this.disableDirectionChange = false;
-    if (!globalStore.state.isPause) {
+
+    if (!statsStore.state.pause) {
       setTimeout(() => this.moveSnake(), this.moveInterval);
     }
   }
@@ -104,12 +108,7 @@ export class GameSnake {
   }
 
   updateMoveInterval() {
-    const newMoveInterval = helpers.getSnakeMoveInterval();
-
-    if (this.moveInterval === newMoveInterval) {
-      return;
-    }
-    this.moveInterval = newMoveInterval;
+    this.moveInterval = helpers.getSnakeMoveInterval();
   }
 
   render() {
