@@ -90,7 +90,7 @@ export class GameSnake {
       return;
     }
 
-    const ateMouse = cellHelpers.compareTwoCells(newHead, this.mouse);
+    const ateMouse = cellHelpers.isEqual(newHead, this.mouse);
     const updatedSnake = [newHead, ...this.snake];
 
     if (!ateMouse) {
@@ -117,9 +117,9 @@ export class GameSnake {
   }
 
   placeNewMouse() {
-    const newMouse = cellHelpers.getRandomCell();
+    const newMouse = cellHelpers.getRandom(true);
     newMouse.blink = true;
-    const isNewMouseValid = this.snake.every(c => !cellHelpers.compareTwoCells(c, newMouse));
+    const isNewMouseValid = !objectHelpers.isObjectCell(this.snake, newMouse);
     if (isNewMouseValid) {
       this.mouse = newMouse;
     } else {

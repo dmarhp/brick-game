@@ -1,12 +1,16 @@
 import {Direction, ICell} from "@global/types";
 import {cellHelpers} from "@global/helpers/cells";
 
-const isIntersecting = (obj1: ICell[], obj2: ICell[]) => {
-  return obj1.some(c1 => obj2.some(c2 => c1.x === c2.x && c1.y === c2.y));
+const isObjectCell = (obj: ICell[], cell: ICell) => {
+  return obj.some((c) => cellHelpers.isEqual(cell, c));
 }
 
-const isObjectCell = (obj: ICell[], cell: ICell) => {
-  return obj.some(({x, y}) => cell.x === x && cell.y === y);
+const isOutsideScreen = (obj: ICell[]) => {
+  return !obj.some(cellHelpers.isVisible);
+}
+
+const isOverlapping = (obj1: ICell[], obj2: ICell[]) => {
+  return obj1.some(c1 => obj2.some(c2 => cellHelpers.isEqual(c1, c2)));
 }
 
 const isVisible = (cells: ICell[]) => {
@@ -25,8 +29,9 @@ const move = (obj: ICell[], direction: Direction, distance: number = 1) => {
 }
 
 export const objectHelpers = {
-  isIntersecting,
   isObjectCell,
+  isOutsideScreen,
+  isOverlapping,
   isVisible,
   isVisibleOrAbove,
   move,

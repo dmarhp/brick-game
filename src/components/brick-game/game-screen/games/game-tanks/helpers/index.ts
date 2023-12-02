@@ -20,7 +20,7 @@ const moveEnemy = (enemy: ITank) => {
 
   let updatedEnemy = moveTank(enemy, newDirection);
 
-  if (cellHelpers.compareTwoCellArrays(updatedEnemy.cells, enemy.cells)) {
+  if (objectHelpers.isOverlapping(updatedEnemy.cells, enemy.cells)) {
     newDirection = directionHelpers.getRandom();
     updatedEnemy = moveTank(enemy, newDirection);
   }
@@ -52,7 +52,7 @@ const moveTank = (tank: ITank, direction: Direction = null) => {
 }
 
 const placeNewEnemy = () => {
-  const {x, y} = cellHelpers.getRandomCell();
+  const {x, y} = cellHelpers.getRandom();
   const direction = directionHelpers.getRandom();
   const enemy: ITank = {x, y, direction};
   enemy.cells = tankCellHelpers.getTank(enemy);
@@ -74,7 +74,7 @@ const moveBullet = (bullet: IBullet) => {
   const {x, y} = cellHelpers.move(bullet, bullet.direction);
 
   const updatedBullet = {...bullet, x, y};
-  const destroyedEnemy = enemies.find(({cells}) => cells.some(c => c.x === x && c.y === y));
+  const destroyedEnemy = enemies.find(({cells}) => objectHelpers.isObjectCell(cells, {x, y}));
 
   if (destroyedEnemy) {
     store.state.enemies = store.state.enemies.filter(e => e.id !== destroyedEnemy.id);

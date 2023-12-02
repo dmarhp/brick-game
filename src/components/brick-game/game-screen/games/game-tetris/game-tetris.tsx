@@ -85,7 +85,7 @@ export class GameTetris {
 
   async moveBlock(direction: Direction) {
     const updatedBlock = objectHelpers.move(this.currentBlockCells, direction);
-    const intersection = objectHelpers.isIntersecting(this.activeCells, updatedBlock);
+    const intersection = objectHelpers.isOverlapping(this.activeCells, updatedBlock);
 
     if (objectHelpers.isVisibleOrAbove(updatedBlock) && !intersection) {
       this.currentBlockCells = updatedBlock;

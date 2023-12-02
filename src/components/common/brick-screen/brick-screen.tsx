@@ -1,7 +1,7 @@
 import {Component, h, Host, Prop, State} from "@stencil/core";
 import {ICell} from "@global/types";
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
-import {cellHelpers} from "@global/helpers/cells";
+import {screenHelpers} from "@global/helpers/screen";
 
 @Component({
   tag: 'brick-screen',
@@ -14,15 +14,24 @@ export class BrickScreen {
   @Prop() height = SCREEN_HEIGHT;
   @Prop() width = SCREEN_WIDTH;
   @State() showBlinkingCells = true;
-  @State() screenCells: ICell[][] = cellHelpers.getEmptyScreenCells(this.width, this.height);
+  @State() screenCells: ICell[][] = [];
 
   componentWillLoad() {
-    this.screenCells = cellHelpers.getEmptyScreenCells(this.width, this.height);
+    this.screenCells = this.getEmptyScreenCells();
     this.interval = setInterval(() => this.showBlinkingCells = !this.showBlinkingCells, 500);
   }
 
   disconnectedCallback() {
     clearInterval(this.interval);
+  }
+  
+  getEmptyScreenCells() {
+    const screen: ICell[][] = [];
+    for (let y = this.height - 1; y >= 0; y--) {
+      const row = screenHelpers.getRow(y, this.width);
+      screen.push(row);
+    }
+    return screen;
   }
 
   renderCell({x, y}: ICell) {

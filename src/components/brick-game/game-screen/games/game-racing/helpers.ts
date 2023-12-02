@@ -4,6 +4,7 @@ import {IRacingBorders, IRacingCompetitorCar} from "./types";
 import statsStore from "../../../../../stores/stats-store";
 import {cellHelpers} from "@global/helpers/cells";
 import {directionHelpers} from "@global/helpers/direction";
+import {objectHelpers} from "@global/helpers/objects";
 
 const BORDER_PATTERN = [true, true, true, false, false];
 const COMPETITOR_DISTANCE = 4;
@@ -109,7 +110,7 @@ const moveCompetitor = ({offsetY, position}: IRacingCompetitorCar) => {
 const updateCompetitorsAfterMove = (competitors: IRacingCompetitorCar[]) => {
   const updatedCompetitors = competitors
     .map(moveCompetitor)
-    .filter(c => c.cells.some(({y}) => y >= 0));
+    .filter(c => !objectHelpers.isOutsideScreen(c.cells));
 
   if (updatedCompetitors < competitors) {
     statsStore.state.score++;
