@@ -1,10 +1,11 @@
-import {Component, h, Listen, State, Watch} from "@stencil/core";
-import {ControlButton, ICell} from "@global/types";
+import {Component, h, Listen, State} from "@stencil/core";
+import {ControlButton, GameStatus, ICell} from "@global/types";
 import {GAME_CATALOG} from "@global/constants";
 import {getBrickLetter} from "@global/helpers/select-game/brick-letters";
 import {getBrickNumber} from "@global/helpers/select-game/brick-numbers";
 import {getGamePreview} from "@global/helpers/select-game/game-preview";
-import globalStore from "../../../../stores/global-store";
+import globalStore from "@stores/global-store";
+import statsStore from "@stores/stats-store";
 
 @Component({
   tag: 'select-game',
@@ -12,8 +13,6 @@ import globalStore from "../../../../stores/global-store";
 })
 export class SelectGame {
   @State() activeCells: ICell[] = [];
-  @State() selectedGameIndex = 0;
-  @State() level = 1;
 
   @Listen('controlButtonClick', {target: 'window'})
   controlButtonClickHandler({detail}: CustomEvent<ControlButton>) {
@@ -35,68 +34,64 @@ export class SelectGame {
         break;
     }
   }
-
-  @Watch('selectedGameIndex')
-  @Watch('level')
-  updateActiveCells() {
-    const game = GAME_CATALOG[this.selectedGameIndex];
-    if (!game) {
-      this.activeCells = [];
-      return;
-    }
-
-    const preview = getGamePreview(game.game);
-    const number = getBrickNumber(this.level);
-    const letter = getBrickLetter(game.letter);
-    this.activeCells = [...letter, ...number, ...preview];
-  } 
-
+  
   componentWillLoad() {
-    this.updateActiveCells();
+    globalStore.state.gameStatus = GameStatus.NewGame;
+    statsStore.state.score = 0;
+    statsStore.state.bricks = [];
   }
 
   nextGame() {
     const maxIndex = GAME_CATALOG.length - 1;
-    
-    if (this.selectedGameIndex === maxIndex) {
-      this.selectedGameIndex = 0;
+
+    if (globalStore.state.selectedMenuItem === maxIndex) {
+      globalStore.state.selectedMenuItem = 0;
     } else {
-      this.selectedGameIndex++;
+      globalStore.state.selectedMenuItem++;
     }
-    this.level = 1;
+    statsStore.state.level = 1;
   }
 
   prevGame() {
-    if (this.selectedGameIndex === 0) {
-      this.selectedGameIndex = GAME_CATALOG.length - 1;
+    if (globalStore.state.selectedMenuItem === 0) {
+      globalStore.state.selectedMenuItem = GAME_CATALOG.length - 1;
     } else {
-      this.selectedGameIndex--;
+      globalStore.state.selectedMenuItem--;
     }
-    this.level = 1;
+    statsStore.state.level = 1;
   }
 
   nextLevel() {
-    if (this.level < 99) {
-      this.level++;
+    if (statsStore.state.level < 99) {
+      statsStore.state.level++;
     }
   }
 
   prevLevel() {
-    if (this.level > 1) {
-      this.level--;
+    if (statsStore.state.level > 1) {
+      statsStore.state.level--;
     }
   }
 
   startGame() {
-    const game = GAME_CATALOG[this.selectedGameIndex];
+    const game = GAME_CATALOG[globalStore.state.selectedMenuItem];
     if (game && !game.locked) {
       globalStore.state.game = game.game;
     }
   }
 
   render() {
+    const {level} = statsStore.state;
+    const {selectedMenuItem} = globalStore.state;
+    const game = GAME_CATALOG[selectedMenuItem];
+
+    const activeCells = [
+      ...getBrickLetter(game.letter),
+      ...getGamePreview(game.game),
+      ...getBrickNumber(level)
+    ]
     return (
-      <brick-screen activeCells={this.activeCells}/>
+      <brick-screen activeCells={activeCells}/>
     );
   }
 }

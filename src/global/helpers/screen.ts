@@ -1,6 +1,20 @@
 import {ICell} from "@global/types";
 import {SCREEN_WIDTH} from "@global/constants";
 
+
+const clearRow = (cells: ICell[], row: number) => {
+  return cells.filter(({y}) => y !== row);
+}
+
+const fillRow = (cells: ICell[], row: number) => {
+  const activeRow = [...Array(11).keys()]
+    .map(x => ({x, y: row} as ICell));
+  
+  return cells
+    .filter(({y}) => y !== row)
+    .concat(activeRow);
+}
+
 const getIndexOfNextRowWithActiveCells = (cells: ICell[], row: number) => {
   const filteredCells = cells.filter(({y}) => y > row);
 
@@ -23,6 +37,8 @@ const isRowActive = (activeCells: ICell[], row: number) => {
 }
 
 export const screenHelpers = {
+  clearRow,
+  fillRow,
   getIndexOfNextRowWithActiveCells,
   isColumnActive,
   isRowActive,

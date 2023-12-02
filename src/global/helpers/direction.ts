@@ -1,11 +1,16 @@
-import {Direction} from "@global/types";
+import {Axis, Direction} from "@global/types";
 
-const getRandom = (): Direction => {
-  return Math.floor(Math.random() * 4) + 1;
+const getRandom = (axis = Axis.None): Direction => {
+  switch (axis) {
+    case Axis.X:
+      return Math.random() < 0.5 ? 2 : 4;
+    case Axis.Y:
+      return Math.random() < 0.5 ? 1 : 3;
+    default:
+      return Math.floor(Math.random() * 4) + 1;
+  }
 }
 
-
-//getRandomDirection
 const isOpposite = (currentDir: Direction, newDir: Direction) => {
   const oppositeDirections = [
     [Direction.Up, Direction.Down],

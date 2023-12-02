@@ -16,9 +16,11 @@
     "jsx": "react",
     "jsxFactory": "h",
     "paths": {
-
       "@global/*": [
         "./src/global/*"
+      ],
+      "@stores/*": [
+        "./src/stores/*"
       ]
     }
   },

@@ -1,3 +1,9 @@
+export enum Axis {
+  None,
+  X,
+  Y
+}
+
 export interface ICell {
   x: number;
   y: number;

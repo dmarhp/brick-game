@@ -1,17 +1,12 @@
-import {ICell} from "@global/types";
+import {Direction, ICell} from "@global/types";
 
 export interface IRacingBorders {
   left: ICell[];
   right: ICell[];
 }
 
-export enum CarPosition {
-  Left,
-  Right
-}
-
 export interface IRacingCompetitorCar {
-  position: CarPosition;
+  position: Direction;
   offsetY: number;
   cells: ICell[];
 }

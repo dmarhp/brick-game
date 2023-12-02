@@ -1,5 +1,5 @@
 import {Component, h, Listen, State} from "@stencil/core";
-import {ControlButton, Direction, GameStatus, ICell} from "@global/types";
+import {ControlButton, Direction, Game, GameStatus, ICell} from "@global/types";
 import helpers from "./helpers";
 import statsStore from "../../../../../stores/stats-store";
 import {cellHelpers} from "@global/helpers/cells";
@@ -7,6 +7,9 @@ import {controlsHelpers} from "@global/helpers/controls";
 import globalStore from "../../../../../stores/global-store";
 import {gameHelpers} from "@global/helpers/game";
 import {objectHelpers} from "@global/helpers/objects";
+import {SCREEN_HEIGHT} from "@global/constants";
+import {screenHelpers} from "@global/helpers/screen";
+import {commonHelpers} from "@global/helpers/common";
 
 @Component({
   tag: 'game-snake',
@@ -20,7 +23,7 @@ export class GameSnake {
   @State() disableDirectionChange = false;
 
   @Listen('controlButtonClick', {target: 'window'})
-  controlButtonClickHandler({detail}: CustomEvent<ControlButton>) {
+  async controlButtonClickHandler({detail}: CustomEvent<ControlButton>) {
     const {gameStatus} = globalStore.state;
     const {pause} = statsStore.state;
 
@@ -38,7 +41,7 @@ export class GameSnake {
 
     if (controlsHelpers.isDirectionButton(detail) && (pause || gameStatus === GameStatus.NewGame)) {
       globalStore.state.gameStatus = GameStatus.Play;
-      this.moveSnake();
+      await this.moveSnake();
     }
     this.disableDirectionChange = true;
   }
@@ -49,19 +52,31 @@ export class GameSnake {
     this.startNewGame();
   }
 
-  startNewGame() {
-    this.snake = helpers.getInitialSnake();
-    this.placeNewMouse();
-    globalStore.state.gameStatus = GameStatus.NewGame;
-  }
+  async finishGame() {
+    this.direction = Direction.None;
+    globalStore.state.gameStatus = GameStatus.Lose;
 
-  pauseHandler() {
-    if (!statsStore.state.pause) {
-      this.moveSnake();
+    let i = SCREEN_HEIGHT;
+
+    while (i > 0) {
+      i--;
+      this.snake = screenHelpers.fillRow(this.snake, i);
+      if (this.mouse.y === i) {
+        this.mouse.y = SCREEN_HEIGHT;
+      }
+      await commonHelpers.sleep(50);
     }
-  }
+    
+    while (i < SCREEN_HEIGHT) {
+      this.snake = screenHelpers.clearRow(this.snake, i);
+      await commonHelpers.sleep(50);
+      i++;
+    }
 
-  moveSnake() {
+    globalStore.state.game = Game.None;
+  }
+  
+  async moveSnake() {
     if (this.direction === Direction.None || statsStore.state.pause) {
       return;
     }
@@ -70,9 +85,8 @@ export class GameSnake {
     const isSnakeCrossed = objectHelpers.isObjectCell(this.snake, newHead);
 
     if (isSnakeCrossed || !cellHelpers.isVisible(newHead)) {
-      this.direction = Direction.None;
-      globalStore.state.gameStatus = GameStatus.Lose;
       this.snake = this.snake.map(c => ({...c, blink: true}));
+      await this.finishGame();
       return;
     }
 
@@ -96,6 +110,12 @@ export class GameSnake {
     }
   }
 
+  async pauseHandler() {
+    if (!statsStore.state.pause) {
+      await this.moveSnake();
+    }
+  }
+
   placeNewMouse() {
     const newMouse = cellHelpers.getRandomCell();
     newMouse.blink = true;
@@ -105,6 +125,12 @@ export class GameSnake {
     } else {
       this.placeNewMouse();
     }
+  }
+
+  startNewGame() {
+    this.snake = helpers.getInitialSnake();
+    this.placeNewMouse();
+    globalStore.state.gameStatus = GameStatus.NewGame;
   }
 
   updateMoveInterval() {

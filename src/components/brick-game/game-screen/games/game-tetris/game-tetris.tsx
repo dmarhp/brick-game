@@ -1,5 +1,5 @@
 import {Component, h, Listen, State, Watch} from "@stencil/core";
-import {ControlButton, Direction, GameStatus, ICell} from "@global/types";
+import {ControlButton, Direction, Game, GameStatus, ICell} from "@global/types";
 import {Block} from "./types";
 import helpers from "./helpers";
 import {objectHelpers} from "@global/helpers/objects";
@@ -8,6 +8,7 @@ import tetrisCellHelpers from "./helpers/cells";
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
 import {commonHelpers} from "@global/helpers/common";
 import store from "../../../../../stores/global-store";
+import globalStore from "../../../../../stores/global-store";
 import {screenHelpers} from "@global/helpers/screen";
 import {directionHelpers} from "@global/helpers/direction";
 import statsStore from "../../../../../stores/stats-store";
@@ -49,12 +50,26 @@ export class GameTetris {
     await this.lowerBlock();
   }
 
-  getNextBlock(initial = false) {
-    const block = initial ? helpers.getRandomBlock() : this.nextBlock;
-    this.currentBlock = {block, direction: Direction.Up};
-    this.currentBlockCells = helpers.getBlockCells(block);
-    this.nextBlock = helpers.getRandomBlock();
-    helpers.updateNextBlockInStats(this.nextBlock);
+  async finishGame() {
+    this.currentBlock = null;
+    this.currentBlockCells = [];
+    globalStore.state.gameStatus = GameStatus.Lose;
+
+    let i = SCREEN_HEIGHT;
+    
+    while (i > 0) {
+      i--;
+      this.activeCells = screenHelpers.fillRow(this.activeCells, i);
+      await commonHelpers.sleep(50);
+    }
+
+    while (i < SCREEN_HEIGHT) {
+      this.activeCells = screenHelpers.clearRow(this.activeCells, i);
+      await commonHelpers.sleep(50);
+      i++;
+    }
+
+    globalStore.state.game = Game.None;
   }
 
   async lowerBlock() {
@@ -77,7 +92,7 @@ export class GameTetris {
     } else if (direction === Direction.Down) {
       this.activeCells = [...this.activeCells, ...this.currentBlockCells];
       if (this.activeCells.some((c => c.y >= SCREEN_HEIGHT))) {
-        store.state.gameStatus = GameStatus.Lose;
+        await this.finishGame();
         return;
       }
 
@@ -121,6 +136,13 @@ export class GameTetris {
     this.activeCells = updatedActiveCells;
   }
 
+  getNextBlock(initial = false) {
+    const block = initial ? helpers.getRandomBlock() : this.nextBlock;
+    this.currentBlock = {block, direction: Direction.Up};
+    this.currentBlockCells = helpers.getBlockCells(block);
+    this.nextBlock = helpers.getRandomBlock();
+    helpers.updateNextBlockInStats(this.nextBlock);
+  }
   rotateBlock() {
     const direction = directionHelpers.rotateRight(this.currentBlock.direction);
     const offset = tetrisCellHelpers.getOffset(this.currentBlockCells);

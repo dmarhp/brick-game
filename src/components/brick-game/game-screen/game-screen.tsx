@@ -28,7 +28,6 @@ export class GameScreen {
   }
 
   renderGame() {
-
     switch (globalStore.state.game) {
       case Game.Snake:
         return <game-snake/>;

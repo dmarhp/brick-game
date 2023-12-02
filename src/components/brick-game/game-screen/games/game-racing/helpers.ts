@@ -1,8 +1,9 @@
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
-import {Direction, ICell} from "@global/types";
-import {CarPosition, IRacingBorders, IRacingCompetitorCar} from "./types";
+import {Axis, Direction, ICell} from "@global/types";
+import {IRacingBorders, IRacingCompetitorCar} from "./types";
 import statsStore from "../../../../../stores/stats-store";
 import {cellHelpers} from "@global/helpers/cells";
+import {directionHelpers} from "@global/helpers/direction";
 
 const BORDER_PATTERN = [true, true, true, false, false];
 const COMPETITOR_DISTANCE = 4;
@@ -40,36 +41,58 @@ const moveBorder = (border: ICell[]) => {
   return border.map(c => cellHelpers.move(c, Direction.Down));
 }
 
-const getCar = (position = CarPosition.Left, offsetY = 0, blink = false): ICell[] => {
-  const positionOffset = position === CarPosition.Left ? 2 : SCREEN_WIDTH - 5;
+const getCar = (position = Direction.Left, offsetY = 0): ICell[] => {
+  const positionOffset = position === Direction.Left ? 2 : SCREEN_WIDTH - 5;
   return [
-    {x: positionOffset, y: offsetY, blink},
-    {x: positionOffset + 2, y: offsetY, blink},
-    {x: positionOffset + 1, y: offsetY + 1, blink},
-    {x: positionOffset, y: offsetY + 2, blink},
-    {x: positionOffset + 1, y: offsetY + 2, blink},
-    {x: positionOffset + 2, y: offsetY + 2, blink},
-    {x: positionOffset + 1, y: offsetY + 3, blink},
+    {x: positionOffset + 0, y: offsetY + 0},
+    {x: positionOffset + 2, y: offsetY + 0},
+    {x: positionOffset + 1, y: offsetY + 1},
+    {x: positionOffset + 0, y: offsetY + 2},
+    {x: positionOffset + 1, y: offsetY + 2},
+    {x: positionOffset + 2, y: offsetY + 2},
+    {x: positionOffset + 1, y: offsetY + 3},
   ];
+}
+
+const getCrashedCar = (position: Direction, firstFrame: boolean) => {
+  const offsetX = position === Direction.Left ? 1 : SCREEN_WIDTH - 5;
+  if (firstFrame) {
+    return [
+      {y: 0, x: offsetX + 0},
+      {y: 0, x: offsetX + 3},
+      {y: 1, x: offsetX + 1},
+      {y: 1, x: offsetX + 2},
+      {y: 2, x: offsetX + 1},
+      {y: 2, x: offsetX + 2},
+      {y: 3, x: offsetX + 0},
+      {y: 3, x: offsetX + 3},
+    ];
+  } else {
+    return [
+      {y: 0, x: offsetX + 1},
+      {y: 0, x: offsetX + 2},
+      {y: 1, x: offsetX + 0},
+      {y: 1, x: offsetX + 3},
+      {y: 2, x: offsetX + 0},
+      {y: 2, x: offsetX + 3},
+      {y: 3, x: offsetX + 1},
+      {y: 3, x: offsetX + 2},
+    ]
+  }
 }
 
 const shouldPlaceNewCompetitor = (competitors: IRacingCompetitorCar[]) => {
   return competitors.every(({cells}) => cells.every(c => c.y < SCREEN_HEIGHT - COMPETITOR_DISTANCE));
 }
 
-const getCompetitorsCar = (offsetY = SCREEN_HEIGHT, position: CarPosition = null): IRacingCompetitorCar => {
+const getCompetitorsCar = (offsetY = SCREEN_HEIGHT, position: Direction = null): IRacingCompetitorCar => {
   if (position === null) {
-    position = getRandomPosition();
+    position = directionHelpers.getRandom(Axis.X);
   }
 
   return {
-    position, offsetY: offsetY, cells: getCar(position, offsetY)
+    position: position, offsetY: offsetY, cells: getCar(position, offsetY)
   };
-}
-
-const getRandomPosition = (): CarPosition => {
-  return Math.round(Math.random());
-
 }
 
 const getInitialCompetitors = () => {
@@ -100,7 +123,7 @@ const updateCompetitorsAfterMove = (competitors: IRacingCompetitorCar[]) => {
   return updatedCompetitors;
 }
 
-const isCarCrashed = (competitors: IRacingCompetitorCar[], position: CarPosition) => {
+const isCarCrashed = (competitors: IRacingCompetitorCar[], position: Direction) => {
   const car = getCar(position);
   return competitors
     .filter(c => c.position === position)
@@ -115,5 +138,6 @@ export default {
   getCar,
   getInitialCompetitors,
   updateCompetitorsAfterMove,
-  isCarCrashed
+  isCarCrashed,
+  getCrashedCar
 }
