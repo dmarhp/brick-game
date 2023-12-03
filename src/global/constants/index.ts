@@ -6,8 +6,28 @@ export const SCREEN_HEIGHT = 20;
 export const SCREEN_WIDTH = 10;
 
 export const GAME_CATALOG: IGameCatalogItem[] = [
-  {name: LOCALIZATION.racing, game: Game.Racing, letter: 'A'},
-  {name: LOCALIZATION.snake, game: Game.Snake, letter: 'B'},
-  {name: LOCALIZATION.tanks, game: Game.Tanks, letter: 'C'},
-  {name: LOCALIZATION.tetris, game: Game.Tetris, letter: 'D'},
+  {
+    game: Game.Racing,
+    name: LOCALIZATION.racing,
+    letter: 'A',
+    lives: 4
+  },
+  {
+    game: Game.Snake,
+    name: LOCALIZATION.snake,
+    letter: 'B',
+    lives: 1
+  },
+  {
+    game: Game.Tanks,
+    name: LOCALIZATION.tanks,
+    letter: 'C',
+    lives: 1
+  },
+  {
+    game: Game.Tetris,
+    name: LOCALIZATION.tetris,
+    letter: 'D',
+    lives: 1
+  },
 ];

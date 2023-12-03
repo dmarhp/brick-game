@@ -1,8 +1,17 @@
 import {Direction, ICell} from "@global/types";
 import {cellHelpers} from "@global/helpers/cells";
+import statsStore from "@stores/stats-store";
 
 const getCell = (obj: ICell[] = [], x:number, y: number) => {
   return obj.find(c => c.x === x && c.y === y);
+}
+
+const getLives = () => {
+  const lives: ICell[] = []
+  for (let i=0; i< statsStore.state.lives; i++) {
+    lives.push({x: 0, y: i});
+  }
+  return lives;
 }
 
 const isObjectCell = (obj: ICell[] = [], cell: ICell) => {
@@ -34,6 +43,7 @@ const move = (obj: ICell[], direction: Direction, distance: number = 1) => {
 
 export const objectHelpers = {
   getCell,
+  getLives,
   isObjectCell,
   isOutsideScreen,
   isOverlapping,

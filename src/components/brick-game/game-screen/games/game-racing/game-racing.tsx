@@ -1,7 +1,7 @@
 import {Component, h, Listen, State, Watch} from "@stencil/core";
 import helpers from "./helpers";
 import {IRacingBorders, IRacingCompetitorCar} from "./types";
-import {ControlButton, Direction, Game, GameStatus, ICell} from "@global/types";
+import {ControlButton, Direction, GameStatus, ICell} from "@global/types";
 import globalStore from "@stores/global-store";
 import statsStore from "@stores/stats-store";
 import {commonHelpers} from "@global/helpers/common";
@@ -45,7 +45,7 @@ export class GameRacing {
         break;
       case ControlButton.Up:
       case ControlButton.Rotate:
-        await this.startGame();
+        await this.driveButtonHandler();
         break;
     }
   }
@@ -53,17 +53,21 @@ export class GameRacing {
   componentWillLoad() {
     this.getInitialGameState();
   }
+  
+  async driveButtonHandler() {
+    if (gameHelpers.canStart()) {
+      gameHelpers.start();
+      await this.drive();
+      return;
+    } else {
+      await this.moveCar();
+    }
+  }
 
   async drive() {
-    this.borders = helpers.moveBorders(this.borders);
-    this.competitors = helpers.updateCompetitorsAfterMove(this.competitors);
-    const isCarCrashed = helpers.isCarCrashed(this.competitors, this.position);
-    if (isCarCrashed) {
-      await this.finishGame();
-      return;
-    }
+    await this.moveCar();
 
-    if (!statsStore.state.pause) {
+    if (!statsStore.state.pause && globalStore.state.gameStatus === GameStatus.Play) {
       setTimeout(() => this.drive(), this.moveInterval);
     }
   }
@@ -86,7 +90,25 @@ export class GameRacing {
       i++;
     }
 
-    globalStore.state.game = Game.None;
+    gameHelpers.handleLose();
+    
+    if (gameHelpers.hasLives()) {
+      this.getInitialGameState();
+    }
+  }
+  
+  async moveCar() {
+    if (gameHelpers.isFinished()) {
+      return;
+    }
+
+    this.borders = helpers.moveBorders(this.borders);
+    this.competitors = helpers.updateCompetitorsAfterMove(this.competitors);
+    const isCarCrashed = helpers.isCarCrashed(this.competitors, this.position);
+    if (isCarCrashed) {
+      await this.finishGame();
+      return;
+    }
   }
 
   async showCrashedCar() {
@@ -98,19 +120,13 @@ export class GameRacing {
     }
   }
 
-  async startGame() {
-    if (globalStore.state.gameStatus === GameStatus.NewGame) {
-      await this.drive();
-    }
-  }
-
   getInitialGameState() {
     this.borders = helpers.getInitialBorders();
     this.playersCar = helpers.getCar();
     this.competitors = helpers.getInitialCompetitors();
     this.position = Direction.Left;
+    globalStore.state.gameStatus = GameStatus.NewGame;
     this.moveInterval = 100;
-    statsStore.reset();
   }
 
   getActiveCells() {

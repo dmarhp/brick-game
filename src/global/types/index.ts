@@ -26,7 +26,6 @@ export enum ControlButton {
   Left = 'left',
   Right = 'right',
   Rotate = 'rotate',
-
   Pause = 'pause',
 }
 
@@ -43,6 +42,7 @@ export interface IGameCatalogItem {
   name: string;
   game: Game;
   letter: Letter;
+  lives: number;
   locked?: boolean;
 }
 

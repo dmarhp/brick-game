@@ -77,6 +77,7 @@ export class SelectGame {
     const game = GAME_CATALOG[globalStore.state.selectedMenuItem];
     if (game && !game.locked) {
       globalStore.state.game = game.game;
+      statsStore.state.lives = game.lives;
     }
   }
 

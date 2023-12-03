@@ -5,6 +5,7 @@ brick-cell {
   border: 1.5px solid $color-br-inactive;
   box-sizing: border-box;
   background-color: $color-br-background;
+  transition: all ease 0.05s;
 
   &:after {
     content: "";
@@ -12,6 +13,7 @@ brick-cell {
     height: calc(100% - 3px);
     margin: auto;
     background-color: $color-br-inactive;
+    transition: background-color ease 0.05s;
   }
   
   &[highlighted] {
