@@ -5,7 +5,7 @@ import helpers from "./helpers";
 import {objectHelpers} from "@global/helpers/objects";
 import {controlsHelpers} from "@global/helpers/controls";
 import tetrisCellHelpers from "./helpers/cells";
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
+import {CLEAR_SCREEN_INTERVAL, SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
 import {commonHelpers} from "@global/helpers/common";
 import store from "../../../../../stores/global-store";
 import globalStore from "../../../../../stores/global-store";
@@ -60,12 +60,12 @@ export class GameTetris {
     while (i > 0) {
       i--;
       this.activeCells = screenHelpers.fillRow(this.activeCells, i);
-      await commonHelpers.sleep(50);
+      await commonHelpers.sleep(CLEAR_SCREEN_INTERVAL);
     }
 
     while (i < SCREEN_HEIGHT) {
       this.activeCells = screenHelpers.clearRow(this.activeCells, i);
-      await commonHelpers.sleep(50);
+      await commonHelpers.sleep(CLEAR_SCREEN_INTERVAL);
       i++;
     }
 

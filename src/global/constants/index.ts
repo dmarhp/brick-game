@@ -1,11 +1,13 @@
 import {Game, IGameCatalogItem} from "@global/types";
+import {LOCALIZATION} from "@global/localization";
 
+export const CLEAR_SCREEN_INTERVAL = 50;
 export const SCREEN_HEIGHT = 20;
 export const SCREEN_WIDTH = 10;
 
 export const GAME_CATALOG: IGameCatalogItem[] = [
-  {name: 'Racing', game: Game.Racing, letter: 'A'},
-  {name: 'Snake', game: Game.Snake, letter: 'B'},
-  {name: 'Tanks', game: Game.Tanks, letter: 'C'},
-  {name: 'Tetris', game: Game.Tetris, letter: 'D'},
+  {name: LOCALIZATION.racing, game: Game.Racing, letter: 'A'},
+  {name: LOCALIZATION.snake, game: Game.Snake, letter: 'B'},
+  {name: LOCALIZATION.tanks, game: Game.Tanks, letter: 'C'},
+  {name: LOCALIZATION.tetris, game: Game.Tetris, letter: 'D'},
 ];

@@ -7,7 +7,7 @@ import {controlsHelpers} from "@global/helpers/controls";
 import globalStore from "../../../../../stores/global-store";
 import {gameHelpers} from "@global/helpers/game";
 import {objectHelpers} from "@global/helpers/objects";
-import {SCREEN_HEIGHT} from "@global/constants";
+import {CLEAR_SCREEN_INTERVAL, SCREEN_HEIGHT} from "@global/constants";
 import {screenHelpers} from "@global/helpers/screen";
 import {commonHelpers} from "@global/helpers/common";
 
@@ -64,12 +64,12 @@ export class GameSnake {
       if (this.mouse.y === i) {
         this.mouse.y = SCREEN_HEIGHT;
       }
-      await commonHelpers.sleep(50);
+      await commonHelpers.sleep(CLEAR_SCREEN_INTERVAL);
     }
     
     while (i < SCREEN_HEIGHT) {
       this.snake = screenHelpers.clearRow(this.snake, i);
-      await commonHelpers.sleep(50);
+      await commonHelpers.sleep(CLEAR_SCREEN_INTERVAL);
       i++;
     }
 

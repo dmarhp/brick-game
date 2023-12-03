@@ -5,7 +5,7 @@
   width: 6rem;
   background-color: $color-br-background;
   justify-content: space-between;
-  
+
   &__main-controls {
     display: flex;
     flex-direction: column;
@@ -14,8 +14,20 @@
   }
 
   &__speed-and-level {
-    display: flex;
+    display: inline-flex;
     gap: 8px;
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+
+      span {
+        color: $color-br-active;
+        text-transform: uppercase;
+      }
+    }
   }
 
   icon-provider {
@@ -36,6 +48,23 @@
     icon-provider {
       width: 28px;
       height: 28px;
+    }
+  }
+
+  &__score {
+    & > div {
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: center;
+
+      span {
+        color: $color-br-active;
+        text-transform: uppercase;
+
+        &[data-active = 'false'] {
+          color: $color-br-inactive;
+        }
+      }
     }
   }
 }

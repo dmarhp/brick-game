@@ -1,7 +1,11 @@
 import {Direction, ICell} from "@global/types";
 import {cellHelpers} from "@global/helpers/cells";
 
-const isObjectCell = (obj: ICell[], cell: ICell) => {
+const getCell = (obj: ICell[] = [], x:number, y: number) => {
+  return obj.find(c => c.x === x && c.y === y);
+}
+
+const isObjectCell = (obj: ICell[] = [], cell: ICell) => {
   return obj.some((c) => cellHelpers.isEqual(cell, c));
 }
 
@@ -29,6 +33,7 @@ const move = (obj: ICell[], direction: Direction, distance: number = 1) => {
 }
 
 export const objectHelpers = {
+  getCell,
   isObjectCell,
   isOutsideScreen,
   isOverlapping,

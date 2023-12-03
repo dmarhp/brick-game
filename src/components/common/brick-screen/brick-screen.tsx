@@ -2,6 +2,7 @@ import {Component, h, Host, Prop, State} from "@stencil/core";
 import {ICell} from "@global/types";
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
 import {screenHelpers} from "@global/helpers/screen";
+import {objectHelpers} from "@global/helpers/objects";
 
 @Component({
   tag: 'brick-screen',
@@ -9,6 +10,8 @@ import {screenHelpers} from "@global/helpers/screen";
 })
 export class BrickScreen {
   private interval: any;
+  private blinkInterval = 500;
+  
   @Prop() activeCells: ICell[] = [];
   @Prop() highlightedCells: ICell[] = [];
   @Prop() height = SCREEN_HEIGHT;
@@ -18,7 +21,7 @@ export class BrickScreen {
 
   componentWillLoad() {
     this.screenCells = this.getEmptyScreenCells();
-    this.interval = setInterval(() => this.showBlinkingCells = !this.showBlinkingCells, 500);
+    this.interval = setInterval(() => this.showBlinkingCells = !this.showBlinkingCells, this.blinkInterval);
   }
 
   disconnectedCallback() {
@@ -34,10 +37,11 @@ export class BrickScreen {
     return screen;
   }
 
-  renderCell({x, y}: ICell) {
-    let isActive = this.activeCells?.some(c => c?.x === x && c?.y === y) || false;
-    const isBlinking = this.activeCells?.some(c => c?.x === x && c?.y === y && c?.blink) || false;
-    const highlighted = this.highlightedCells?.some(c => c?.x === x && c?.y === y) || false;
+  renderCell(cell: ICell) {
+    const {x, y} = cell;
+    let isActive = objectHelpers.isObjectCell(this.activeCells, cell) || false;
+    const isBlinking = objectHelpers.getCell(this.activeCells, x, y)?.blink || false;
+    const highlighted = objectHelpers.isObjectCell(this.highlightedCells, cell);
     if (isActive && isBlinking) {
       isActive = this.showBlinkingCells;
     }

@@ -7,7 +7,7 @@ import statsStore from "@stores/stats-store";
 import {commonHelpers} from "@global/helpers/common";
 import {controlsHelpers} from "@global/helpers/controls";
 import {gameHelpers} from "@global/helpers/game";
-import {SCREEN_HEIGHT} from "@global/constants";
+import {CLEAR_SCREEN_INTERVAL, SCREEN_HEIGHT} from "@global/constants";
 import {screenHelpers} from "@global/helpers/screen";
 
 @Component({
@@ -77,12 +77,12 @@ export class GameRacing {
     while (i > 0) {
       i--;
       this.activeCells = screenHelpers.fillRow(this.activeCells, i);
-      await commonHelpers.sleep(50);
+      await commonHelpers.sleep(CLEAR_SCREEN_INTERVAL);
     }
 
     while (i < SCREEN_HEIGHT) {
       this.activeCells = screenHelpers.clearRow(this.activeCells, i);
-      await commonHelpers.sleep(50);
+      await commonHelpers.sleep(CLEAR_SCREEN_INTERVAL);
       i++;
     }
 
