@@ -1,9 +1,12 @@
 import {Component, h, Listen} from "@stencil/core";
-import {ControlButton, Direction} from "@global/types";
+import {ControlButton, Direction, GameStatus} from "@global/types";
 import {controlsHelpers} from "@global/helpers/controls";
 import store from "../../../../../stores/game-tanks-store";
 import helpers from "./helpers";
 import {tankCellHelpers} from "./helpers/cells";
+import {commonHelpers} from "@global/helpers/common";
+import {gameHelpers} from "@global/helpers/game";
+import {screenHelpers} from "@global/helpers/screen";
 
 @Component({
   tag: 'game-tanks',
@@ -26,6 +29,30 @@ export class GameTanks {
     this.placeInitialEnemies();
     this.moveBullets();
     this.moveEnemies();
+
+    store.onChange('isPlayerDestroyed', this.finishGameIfPlayerIsDestroyed.bind(this));
+  }
+
+  async finishGameIfPlayerIsDestroyed() {
+    const {isPlayerDestroyed, player} = store.state;
+    if (!isPlayerDestroyed) {
+      return;
+    }
+
+    const initialPlayersCells = [...player.cells];
+    const updatedPlayersCells = player.cells.map(c => ({...c, blink: true}));
+    store.state.player = {...player, cells: updatedPlayersCells};
+    await commonHelpers.sleep(2000);
+    store.state.player = {...player, cells: initialPlayersCells};
+    store.state.isPlayerDestroyed = false;
+    gameHelpers.setStatus(GameStatus.Lose);
+    
+    if (gameHelpers.isLastLive()) {
+      const activeCells = this.getActiveCells();
+      await screenHelpers.clearScreen(activeCells);
+    }
+
+    gameHelpers.handleLose();
   }
 
   updatePlayersCells() {
@@ -40,7 +67,7 @@ export class GameTanks {
   moveEnemies() {
     const {enemies} = store.state;
     for (let i = 0; i < enemies.length; i++) {
-      store.state.enemies[i] = helpers.moveEnemy(enemies[i]);
+      helpers.moveEnemy(i);
     }
 
     setTimeout(() => this.moveEnemies(), this.enemyMoveInterval);
@@ -53,27 +80,38 @@ export class GameTanks {
   }
 
   moveBullets() {
-    store.state.playerBullets = store.state.playerBullets
+    const playerBullets = store.state.playerBullets
       .map(helpers.moveBullet)
       .filter(b => !!b);
 
-    setTimeout(() => this.moveBullets(), 150);
+    const enemyBullets = store.state.enemyBullets
+      .map(helpers.moveEnemyBullet)
+      .filter(b => !!b);
+
+    store.state.playerBullets = playerBullets;
+    store.state.enemyBullets = enemyBullets;
+
+    setTimeout(() => this.moveBullets(), 200);
   }
 
   shoot() {
     store.state.playerBullets.push({...store.state.player, isPlayer: true});
   }
-
-  render() {
-    const {player, playerBullets, enemies} = store.state;
-    const activeCells = [
+  
+  getActiveCells() {
+    const {player, playerBullets, enemies, enemyBullets} = store.state;
+     return [
       ...player.cells,
       ...playerBullets,
+      ...enemyBullets,
       ...enemies.map(e => e.cells).flat()
     ];
+  }
+
+  render() {
     return (
       <brick-screen
-        activeCells={activeCells}
+        activeCells={this.getActiveCells()}
       />
     );
   }

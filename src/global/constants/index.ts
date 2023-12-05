@@ -23,7 +23,7 @@ export const GAME_CATALOG: IGameCatalogItem[] = [
     game: Game.Tanks,
     name: LOCALIZATION.tanks,
     letter: 'C',
-    lives: 1
+    lives: 4
   },
   {
     game: Game.Tetris,

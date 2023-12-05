@@ -12,7 +12,8 @@ const getEnemyMoveType = (): EnemyMoveType => {
   return Math.random() < 0.67 ? 1 : 2;
 }
 
-const moveEnemy = (enemy: ITank) => {
+const moveEnemy = (i: number) => {
+  const enemy = store.state.enemies[i];
   const moveType = getEnemyMoveType();
   let newDirection = moveType === EnemyMoveType.Rotate
     ? directionHelpers.getRandom()
@@ -24,7 +25,14 @@ const moveEnemy = (enemy: ITank) => {
     newDirection = directionHelpers.getRandom();
     updatedEnemy = moveTank(enemy, newDirection);
   }
-  return updatedEnemy;
+  
+  const shouldShoot = Math.floor(Math.random() * 6) === 0 && !store.state.isPlayerDestroyed;
+  
+  if (shouldShoot) {
+    store.state.enemyBullets.push({...enemy} as IBullet);
+  }
+  
+  store.state.enemies[i] = updatedEnemy;
 }
 
 const moveTank = (tank: ITank, direction: Direction = null) => {
@@ -70,23 +78,44 @@ const placeNewEnemy = () => {
 }
 
 const moveBullet = (bullet: IBullet) => {
-  const {enemies} = store.state;
+  const {enemies, enemyBullets} = store.state;
   const {x, y} = cellHelpers.move(bullet, bullet.direction);
 
-  const updatedBullet = {...bullet, x, y};
-  const destroyedEnemy = enemies.find(({cells}) => objectHelpers.isObjectCell(cells, {x, y}));
+  const updatedBullet: IBullet = {...bullet, x, y};
+  const destroyedEnemy = enemies.find(({cells}) => objectHelpers.isObjectCell(cells, updatedBullet));
+  const destroyedEnemyBullet = enemyBullets.find(b => cellHelpers.isEqual(b, updatedBullet) || cellHelpers.isEqual(b, bullet));
 
   if (destroyedEnemy) {
     store.state.enemies = store.state.enemies.filter(e => e.id !== destroyedEnemy.id);
     setTimeout(() => placeNewEnemy(), 500);
+  }
+  
+  if (destroyedEnemyBullet) {
+    store.state.enemyBullets = store.state.enemyBullets.filter(b => !cellHelpers.isEqual(b, updatedBullet));
+  }
+  
+  if (destroyedEnemyBullet || destroyedEnemy) {
     return null;
   }
   return updatedBullet
+}
+
+const moveEnemyBullet = (bullet: IBullet) => {
+  const {player, isPlayerDestroyed} = store.state;
+  const {x, y} = cellHelpers.move(bullet, bullet.direction);
+  const updatedBullet: IBullet = {...bullet, x, y};
+  const isPlayerDestroyedByBullet = objectHelpers.isObjectCell(player.cells, updatedBullet);
+  if (isPlayerDestroyedByBullet && !isPlayerDestroyed) {
+    store.state.isPlayerDestroyed = true;
+    return null;
+  }
+  return updatedBullet;
 }
 
 export default {
   moveEnemy,
   moveTank,
   placeNewEnemy,
-  moveBullet
+  moveBullet,
+  moveEnemyBullet
 }

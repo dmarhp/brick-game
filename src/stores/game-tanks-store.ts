@@ -16,13 +16,15 @@ interface IGameTanksStore {
   enemies: ITank[];
   playerBullets: IBullet[];
   enemyBullets: IBullet[];
+  isPlayerDestroyed: boolean;
 }
 
 const store = createStore<IGameTanksStore>({
   player: initialPlayersPosition,
   enemies: [],
   playerBullets: [],
-  enemyBullets: []
+  enemyBullets: [],
+  isPlayerDestroyed: false
 });
 
 export default store;

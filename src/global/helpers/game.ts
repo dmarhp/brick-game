@@ -40,6 +40,10 @@ const isFinished = () => {
   return [GameStatus.Win, GameStatus.Lose].includes(gameStore.state.gameStatus);
 }
 
+const isLastLive = () => {
+  return gameStore.state.lives === 1;
+}
+
 const isLoser = () => {
   return gameStore.state.gameStatus === GameStatus.Lose;
 }
@@ -79,6 +83,7 @@ export const gameHelpers = {
   handleLose,
   hasLives,
   isFinished,
+  isLastLive,
   isLoser,
   setStatus,
   start,
