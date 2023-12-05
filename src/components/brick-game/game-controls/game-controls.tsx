@@ -2,7 +2,7 @@ import {Component, Event, EventEmitter, h, Host, Listen} from "@stencil/core";
 import {ControlButton} from "@global/types";
 import helpers from "./helpers";
 import {LOCALIZATION} from "@global/localization";
-import globalStore from "../../../stores/global-store";
+import gameStore from "@stores/game-store";
 
 @Component({
   tag: 'game-controls',
@@ -12,16 +12,16 @@ export class GameControls {
   @Event() controlButtonClick: EventEmitter<ControlButton>;
 
   @Listen('keydown', {target: 'window'})
-  handleKeyDown(event: KeyboardEvent) {
+  async handleKeyDown(event: KeyboardEvent) {
     const button = helpers.getControlButtonFromKeyBoardEvent(event);
     if (button === ControlButton.Pause) {
-      globalStore.state.isPause = !globalStore.state.isPause;
+      gameStore.state.pause = !gameStore.state.pause;
       return;
     }
 
     this.controlButtonClickHandler(button);
     if (helpers.isDirectionOrRotateButton(button)) {
-      globalStore.state.isPause = false;
+      gameStore.state.pause = false;
     }
   }
 

@@ -1,6 +1,6 @@
 import {ControlButton} from "@global/types";
 
-const getControlButtonFromKeyBoardEvent = (event: KeyboardEvent) => {
+const getControlButtonFromKeyBoardEvent = (event: KeyboardEvent): ControlButton => {
   switch (event.key) {
     case 'w':
     case 'ArrowUp':

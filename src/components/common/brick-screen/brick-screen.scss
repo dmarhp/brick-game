@@ -4,16 +4,12 @@ brick-screen {
   flex-direction: column;
   gap: 2px;
   
+  &[isHidden] {
+    display: none;
+  }
+  
   .brick-screen-row {
     display: flex;
     gap: 2px;
-  }
-  
-  &[showBlinkingCells] {
-    brick-cell {
-      &.blink div {
-        background-color: #2dd36f;
-      }
-    }
   }
 }

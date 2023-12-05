@@ -1,7 +1,8 @@
 import {Component, h, Host, State} from "@stencil/core";
-import {Game, ICell} from "@global/types";
+import {Game, ICell, View} from "@global/types";
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
-import globalStore from "../../../stores/global-store";
+import gameStore from "@stores/game-store";
+import globalStore from "@stores/global-store";
 
 @Component({
   tag: 'game-screen',
@@ -19,7 +20,7 @@ export class GameScreen {
     this.brickScreenRef.style.height = this.getScreenSizeInPixels(SCREEN_HEIGHT);
     this.brickScreenRef.style.width = this.getScreenSizeInPixels(SCREEN_WIDTH);
   }
-  
+
   getScreenSizeInPixels(cells: number) {
     const gaps = (cells - 1) * 2;
     const cellsSize = cells * 14;
@@ -28,7 +29,7 @@ export class GameScreen {
   }
 
   renderGame() {
-    switch (globalStore.state.game) {
+    switch (gameStore.state.game) {
       case Game.Snake:
         return <game-snake/>;
       case Game.Racing:
@@ -38,13 +39,13 @@ export class GameScreen {
       case Game.Tetris:
         return <game-tetris/>;
       case Game.None:
-        return <select-game/>;
       default:
-        return <brick-screen activeCells={this.activeCells}/>
+        return null;
     }
   }
 
   render() {
+    const {view} = globalStore.state;
     return (
       <Host>
         <div class="game-screen-wrapper">
@@ -52,7 +53,15 @@ export class GameScreen {
             class="brick-screen-wrapper"
             ref={ref => this.brickScreenRef = ref}
           >
-            {this.renderGame()}
+            <div class={{'brick-screen--hidden': view === View.SelectGame}}>
+              <select-game/>
+            </div>
+            <div class={{'brick-screen--hidden': view === View.Game}}>
+              {this.renderGame()}
+            </div>
+            <div class={{'brick-screen--hidden': view === View.ClearScreen}}>
+              <clear-screen/>
+            </div>
           </div>
           <stats-screen/>
         </div>

@@ -1,6 +1,6 @@
 import {Component, h, Host, Prop, State} from "@stencil/core";
 import {ICell} from "@global/types";
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
+import {CELL_BLINK_INTERVAL, SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
 import {screenHelpers} from "@global/helpers/screen";
 import {objectHelpers} from "@global/helpers/objects";
 
@@ -10,9 +10,9 @@ import {objectHelpers} from "@global/helpers/objects";
 })
 export class BrickScreen {
   private interval: any;
-  private blinkInterval = 500;
-  
+
   @Prop() activeCells: ICell[] = [];
+  @Prop() hidden: boolean;
   @Prop() highlightedCells: ICell[] = [];
   @Prop() height = SCREEN_HEIGHT;
   @Prop() width = SCREEN_WIDTH;
@@ -21,13 +21,13 @@ export class BrickScreen {
 
   componentWillLoad() {
     this.screenCells = this.getEmptyScreenCells();
-    this.interval = setInterval(() => this.showBlinkingCells = !this.showBlinkingCells, this.blinkInterval);
+    this.interval = setInterval(() => this.showBlinkingCells = !this.showBlinkingCells, CELL_BLINK_INTERVAL);
   }
 
   disconnectedCallback() {
     clearInterval(this.interval);
   }
-  
+
   getEmptyScreenCells() {
     const screen: ICell[][] = [];
     for (let y = this.height - 1; y >= 0; y--) {
@@ -57,7 +57,7 @@ export class BrickScreen {
 
   render() {
     return (
-      <Host>
+      <Host isHidden={this.hidden}>
         {this.screenCells.map((row, y) => (
           <div class="brick-screen-row" key={`row_${y}`}>
             {row.map(this.renderCell.bind(this))}

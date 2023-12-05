@@ -1,6 +1,7 @@
 import {Game, IGameCatalogItem} from "@global/types";
 import {LOCALIZATION} from "@global/localization";
 
+export const CELL_BLINK_INTERVAL = 500;
 export const CLEAR_SCREEN_INTERVAL = 50;
 export const SCREEN_HEIGHT = 20;
 export const SCREEN_WIDTH = 10;

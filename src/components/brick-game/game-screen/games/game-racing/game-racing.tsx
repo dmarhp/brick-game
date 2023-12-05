@@ -2,17 +2,14 @@ import {Component, h, Listen, State, Watch} from "@stencil/core";
 import helpers from "./helpers";
 import {IRacingBorders, IRacingCompetitorCar} from "./types";
 import {ControlButton, Direction, GameStatus, ICell} from "@global/types";
-import globalStore from "@stores/global-store";
-import statsStore from "@stores/stats-store";
 import {commonHelpers} from "@global/helpers/common";
 import {controlsHelpers} from "@global/helpers/controls";
 import {gameHelpers} from "@global/helpers/game";
-import {CLEAR_SCREEN_INTERVAL, SCREEN_HEIGHT} from "@global/constants";
 import {screenHelpers} from "@global/helpers/screen";
+import gameStore from "@stores/game-store";
 
 @Component({
   tag: 'game-racing',
-  styleUrl: 'game-racing.scss'
 })
 export class GameRacing {
   @State() activeCells: ICell[] = [];
@@ -66,30 +63,18 @@ export class GameRacing {
 
   async drive() {
     await this.moveCar();
+    const {gameStatus, pause} = gameStore.state;
 
-    if (!statsStore.state.pause && globalStore.state.gameStatus === GameStatus.Play) {
+    if (!pause && gameStatus === GameStatus.Play) {
       setTimeout(() => this.drive(), this.moveInterval);
     }
   }
 
   async finishGame() {
-    globalStore.state.gameStatus = GameStatus.Lose;
+    gameHelpers.setStatus(GameStatus.Lose);
     await this.showCrashedCar();
-
-    let i = SCREEN_HEIGHT;
-
-    while (i > 0) {
-      i--;
-      this.activeCells = screenHelpers.fillRow(this.activeCells, i);
-      await commonHelpers.sleep(CLEAR_SCREEN_INTERVAL);
-    }
-
-    while (i < SCREEN_HEIGHT) {
-      this.activeCells = screenHelpers.clearRow(this.activeCells, i);
-      await commonHelpers.sleep(CLEAR_SCREEN_INTERVAL);
-      i++;
-    }
-
+    const activeCells = this.getActiveCells();
+    await screenHelpers.clearScreen(activeCells);
     gameHelpers.handleLose();
     
     if (gameHelpers.hasLives()) {
@@ -118,6 +103,7 @@ export class GameRacing {
       await commonHelpers.sleep(150);
       i++;
     }
+    this.playersCar = [];
   }
 
   getInitialGameState() {
@@ -125,7 +111,7 @@ export class GameRacing {
     this.playersCar = helpers.getCar();
     this.competitors = helpers.getInitialCompetitors();
     this.position = Direction.Left;
-    globalStore.state.gameStatus = GameStatus.NewGame;
+    gameHelpers.setStatus(GameStatus.NewGame);
     this.moveInterval = 100;
   }
 

@@ -1,14 +1,6 @@
-import {objectHelpers} from "@global/helpers/objects";
-import statsStore from "@stores/stats-store";
-import {GAME_CATALOG} from "@global/constants";
-import globalStore from "@stores/global-store";
-
-const updateLives = () => {
-  const game = GAME_CATALOG[globalStore.state.game];
-  if (!game || game.lives === 1) {
-    statsStore.state.bricks = [];
-  }
-  statsStore.state.bricks = objectHelpers.getLives();
+const dispatchCustomEvent = (eventName: string, detail: any) => {
+  const event = new CustomEvent(eventName, { detail});
+  window.dispatchEvent(event);
 }
 
 const sleep = async (millis: number) => {
@@ -16,6 +8,6 @@ const sleep = async (millis: number) => {
 }
 
 export const commonHelpers = {
-  updateLives,
+  dispatchCustomEvent,
   sleep
 }

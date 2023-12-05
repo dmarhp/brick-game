@@ -65,3 +65,10 @@ export enum Icon {
   Pause = 'pause',
   Poo = 'poo'
 }
+
+export enum View {
+  None,
+  ClearScreen,
+  Game,
+  SelectGame,
+}

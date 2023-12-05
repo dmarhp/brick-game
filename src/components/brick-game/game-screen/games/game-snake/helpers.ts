@@ -1,6 +1,6 @@
 import {ICell} from "@global/types";
-import statsStore from "../../../../../stores/stats-store";
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
+import gameStore from "@stores/game-store";
 
 const getInitialSnake = (): ICell[] => {
   const x = Math.round((SCREEN_WIDTH / 2) - 2);
@@ -14,7 +14,7 @@ const getInitialSnake = (): ICell[] => {
 const getSnakeMoveInterval = () => {
   const initialInterval = 1000;
   const minimalInterval = 100;
-  const {score} = statsStore.state;
+  const {score} = gameStore.state;
   return Math.max(initialInterval - Math.floor(score / 5) * 150, minimalInterval);
 }
 

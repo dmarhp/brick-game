@@ -7,7 +7,6 @@ import {tankCellHelpers} from "./helpers/cells";
 
 @Component({
   tag: 'game-tanks',
-  styleUrl: 'game-tanks.scss'
 })
 export class GameTanks {
   private enemyMoveInterval = 500;

@@ -1,9 +1,9 @@
 import {Block} from "../types";
 import tetrisCellHelpers from "./cells";
-import statsStore from "../../../../../../stores/stats-store";
 import {Direction, ICell} from "@global/types";
 import {SCREEN_HEIGHT} from "@global/constants";
 import {objectHelpers} from "@global/helpers/objects";
+import {gameHelpers} from "@global/helpers/game";
 
 
 const getBlockCells = (block: Block, direction = Direction.Up, offset = tetrisCellHelpers.getInitialOffset()) => {
@@ -15,7 +15,8 @@ const getRandomBlock = () => {
 }
 
 const updateNextBlockInStats = (block: Block) => {
-  statsStore.state.bricks = tetrisCellHelpers.getBlock(block, Direction.Up, {x: 0, y: 0});
+  const cells = tetrisCellHelpers.getBlock(block, Direction.Up,{x: 0, y: 0});
+  gameHelpers.renderNextObject(cells);
 }
 
 

@@ -1,15 +1,15 @@
-import {Game, GameStatus} from "@global/types";
+import {Game, View} from "@global/types";
 import {createStore} from "@stencil/store";
 
 interface IGlobalStore {
-  game: Game;
-  gameStatus: GameStatus;
   selectedMenuItem: Game;
+  music: boolean;
+  view: View;
 }
 
 const store = createStore<IGlobalStore>({
-  game: Game.None,
-  gameStatus: GameStatus.NewGame,
+  music: false,
+  view: View.SelectGame,
   selectedMenuItem: Game.None
 });
 

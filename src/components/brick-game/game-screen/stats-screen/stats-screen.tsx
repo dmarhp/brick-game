@@ -1,7 +1,7 @@
 import {Component, h, Host} from "@stencil/core";
-import statsStore from "../../../../stores/stats-store";
 import {Icon} from "@global/types";
 import {LOCALIZATION} from "@global/localization";
+import gameStore from "@stores/game-store";
 
 @Component({
   tag: 'stats-screen',
@@ -9,22 +9,14 @@ import {LOCALIZATION} from "@global/localization";
 })
 export class StatsScreen {
   render() {
-    const {
-      pause,
-      music,
-      bricks,
-      speed,
-      level,
-      score,
-      showHiScore
-    } = statsStore.state;
+    const {smallBrickScreen, level, pause, score, speed} = gameStore.state;
 
     return (
       <Host class="stats-screen">
         <div class="stats-screen__main-controls">
           <div class="stats-screen__score">
             <div>
-              <span data-active={showHiScore.toString()}>{LOCALIZATION.hiScorePrefix}</span>
+              <span data-active={'false'}>{LOCALIZATION.hiScorePrefix}</span>
               <span>{LOCALIZATION.score}</span>
             </div>
             <seven-segment-digit-panel
@@ -34,7 +26,7 @@ export class StatsScreen {
             />
           </div>
 
-          <brick-screen width={4} height={4} activeCells={bricks}/>
+          <brick-screen width={4} height={4} activeCells={smallBrickScreen}/>
 
           <div class="stats-screen__speed-and-level">
             <div>
@@ -45,7 +37,7 @@ export class StatsScreen {
               />
               <span>{LOCALIZATION.level}</span>
             </div>
-            
+
             <div>
               <seven-segment-digit-panel
                 id="StatsScreenSpeedDigitPanel"
@@ -60,7 +52,7 @@ export class StatsScreen {
 
         </div>
         <div class="stats-screen__music-and-pause">
-          <icon-provider icon={Icon.Music} class={{'active': music}}/>
+          <icon-provider icon={Icon.Music} class={{'active': false}}/>
           <icon-provider icon={Icon.Pause} class={{'active': pause}}/>
         </div>
       </Host>

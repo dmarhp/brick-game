@@ -1,27 +1,34 @@
 import {Component, h, Listen, State} from "@stencil/core";
-import {ControlButton, GameStatus, ICell} from "@global/types";
+import {ControlButton, ICell, View} from "@global/types";
 import {GAME_CATALOG} from "@global/constants";
 import {getBrickLetter} from "@global/helpers/select-game/brick-letters";
 import {getBrickNumber} from "@global/helpers/select-game/brick-numbers";
 import {getGamePreview} from "@global/helpers/select-game/game-preview";
 import globalStore from "@stores/global-store";
-import statsStore from "@stores/stats-store";
+import gameStore from "@stores/game-store";
+import {gameHelpers} from "@global/helpers/game";
 
 @Component({
   tag: 'select-game',
-  styleUrl: 'select-game.scss'
 })
 export class SelectGame {
   @State() activeCells: ICell[] = [];
+  @State() game = 0;
+  @State() level = 1;
+  @State() speed = 1;
 
   @Listen('controlButtonClick', {target: 'window'})
   controlButtonClickHandler({detail}: CustomEvent<ControlButton>) {
+    if (globalStore.state.view !== View.SelectGame) {
+      return;
+    }
+
     switch (detail) {
       case ControlButton.Right:
-        this.nextLevel();
+        this.speedUp();
         break;
       case ControlButton.Left:
-        this.prevLevel();
+        this.speedDown();
         break;
       case ControlButton.Up:
         this.prevGame();
@@ -30,66 +37,54 @@ export class SelectGame {
         this.nextGame();
         break;
       case ControlButton.Rotate:
-        this.startGame()
+        gameHelpers.startNewGame(this.game, this.speed);
         break;
     }
   }
-  
+
   componentWillLoad() {
-    globalStore.state.gameStatus = GameStatus.NewGame;
-    statsStore.state.score = 0;
-    statsStore.state.bricks = [];
+    gameStore.reset();
   }
 
   nextGame() {
     const maxIndex = GAME_CATALOG.length - 1;
-
-    if (globalStore.state.selectedMenuItem === maxIndex) {
-      globalStore.state.selectedMenuItem = 0;
+    if (this.game === maxIndex) {
+      this.game = 0;
     } else {
-      globalStore.state.selectedMenuItem++;
+      this.game++;
     }
-    statsStore.state.level = 1;
+    this.level = 1;
+    this.speed = 1;
   }
 
   prevGame() {
-    if (globalStore.state.selectedMenuItem === 0) {
-      globalStore.state.selectedMenuItem = GAME_CATALOG.length - 1;
+    if (this.game === 0) {
+      this.game = GAME_CATALOG.length - 1;
     } else {
-      globalStore.state.selectedMenuItem--;
+      this.game--;
     }
-    statsStore.state.level = 1;
+    this.level = 1;
+    this.speed = 1;
   }
 
-  nextLevel() {
-    if (statsStore.state.level < 99) {
-      statsStore.state.level++;
-    }
-  }
-
-  prevLevel() {
-    if (statsStore.state.level > 1) {
-      statsStore.state.level--;
+  speedDown() {
+    if (this.speed > 1) {
+      this.speed--;
     }
   }
 
-  startGame() {
-    const game = GAME_CATALOG[globalStore.state.selectedMenuItem];
-    if (game && !game.locked) {
-      globalStore.state.game = game.game;
-      statsStore.state.lives = game.lives;
+  speedUp() {
+    if (this.speed < 99) {
+      this.speed++;
     }
   }
 
   render() {
-    const {level} = statsStore.state;
-    const {selectedMenuItem} = globalStore.state;
-    const game = GAME_CATALOG[selectedMenuItem];
-
+    const game = GAME_CATALOG[this.game];
     const activeCells = [
       ...getBrickLetter(game.letter),
       ...getGamePreview(game.game),
-      ...getBrickNumber(level)
+      ...getBrickNumber(this.speed)
     ]
     return (
       <brick-screen activeCells={activeCells}/>

@@ -1,10 +1,10 @@
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
 import {Axis, Direction, ICell} from "@global/types";
 import {IRacingBorders, IRacingCompetitorCar} from "./types";
-import statsStore from "../../../../../stores/stats-store";
 import {cellHelpers} from "@global/helpers/cells";
 import {directionHelpers} from "@global/helpers/direction";
 import {objectHelpers} from "@global/helpers/objects";
+import gameStore from "@stores/game-store";
 
 const BORDER_PATTERN = [true, true, true, false, false];
 const COMPETITOR_DISTANCE = 4;
@@ -113,7 +113,7 @@ const updateCompetitorsAfterMove = (competitors: IRacingCompetitorCar[]) => {
     .filter(c => !objectHelpers.isOutsideScreen(c.cells));
 
   if (updatedCompetitors < competitors) {
-    statsStore.state.score++;
+    gameStore.state.score++;
   }
 
   if (shouldPlaceNewCompetitor(competitors)) {
