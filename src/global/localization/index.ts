@@ -6,6 +6,7 @@ export const LOCALIZATION = {
   racing: 'Racing',
   right: 'Right',
   rotate: 'Rotate',
+  rowFiller: 'Row filler',
   score: 'Score',
   snake: 'Snake',
   speed: 'Speed',

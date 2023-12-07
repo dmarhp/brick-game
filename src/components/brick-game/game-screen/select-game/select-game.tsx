@@ -1,4 +1,4 @@
-import {Component, h, Listen, State} from "@stencil/core";
+import {Component, h, Listen, Prop, State} from "@stencil/core";
 import {ControlButton, ICell, View} from "@global/types";
 import {GAME_CATALOG} from "@global/constants";
 import {getBrickLetter} from "@global/helpers/select-game/brick-letters";
@@ -12,6 +12,7 @@ import {gameHelpers} from "@global/helpers/game";
   tag: 'select-game',
 })
 export class SelectGame {
+  @Prop() isHidden = false;
   @State() activeCells: ICell[] = [];
   @State() game = 0;
   @State() level = 1;
@@ -87,7 +88,11 @@ export class SelectGame {
       ...getBrickNumber(this.speed)
     ]
     return (
-      <brick-screen activeCells={activeCells}/>
+      <brick-screen
+        id="SelectGame"
+        activeCells={activeCells}
+        isHidden={this.isHidden}
+      />
     );
   }
 }

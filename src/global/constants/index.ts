@@ -31,4 +31,10 @@ export const GAME_CATALOG: IGameCatalogItem[] = [
     letter: 'D',
     lives: 1
   },
+  {
+    game: Game.RowFiller,
+    name: LOCALIZATION.rowFiller,
+    letter: 'E',
+    lives: 1,
+  },
 ];

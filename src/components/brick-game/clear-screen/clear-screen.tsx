@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, h, Listen, State} from "@stencil/core";
+import {Component, Event, EventEmitter, h, Listen, Prop, State} from "@stencil/core";
 import {ICell} from "@global/types";
 import {commonHelpers} from "@global/helpers/common";
 import {CLEAR_SCREEN_INTERVAL, SCREEN_HEIGHT} from "@global/constants";
@@ -8,6 +8,7 @@ import {screenHelpers} from "@global/helpers/screen";
   tag: 'clear-screen',
 })
 export class ClearScreen {
+  @Prop() isHidden = false;
   @State() activeCells: ICell[] = [];
   @Event({eventName: 'clear-screen.finish'}) finish: EventEmitter;
 
@@ -38,7 +39,9 @@ export class ClearScreen {
   render() {
     return (
       <brick-screen
+        id="ClearScreen"
         activeCells={this.activeCells}
+        isHidden={this.isHidden}
       />
     );
   }

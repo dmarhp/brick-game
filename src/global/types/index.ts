@@ -36,6 +36,7 @@ export enum Game {
   Tanks,
   Tetris,
   LockedGame,
+  RowFiller,
 }
 
 export interface IGameCatalogItem {
@@ -71,4 +72,18 @@ export enum View {
   ClearScreen,
   Game,
   SelectGame,
+}
+
+export enum Figure {
+  BlockI = 'blockI',
+  BlockJ = 'blockJ',
+  BlockL = 'blockL',
+  BlockO = 'blockO',
+  BlockS = 'blockS',
+  BlockT = 'blockT',
+  BlockZ = 'blockZ',
+  Car = 'car',
+  Car2 = 'car2',
+  Tank = 'tank',
+  Tank2 = 'tank2',
 }

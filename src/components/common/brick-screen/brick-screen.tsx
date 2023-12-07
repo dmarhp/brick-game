@@ -1,4 +1,4 @@
-import {Component, h, Host, Prop, State} from "@stencil/core";
+import {Component, Element, h, Host, Prop, State, Watch} from "@stencil/core";
 import {ICell} from "@global/types";
 import {CELL_BLINK_INTERVAL, SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
 import {screenHelpers} from "@global/helpers/screen";
@@ -9,19 +9,30 @@ import {objectHelpers} from "@global/helpers/objects";
   styleUrl: 'brick-screen.scss'
 })
 export class BrickScreen {
+  @Element() el: HTMLBrickScreenElement;
+  
   private interval: any;
-
+  
   @Prop() activeCells: ICell[] = [];
-  @Prop() hidden: boolean;
+  @Prop() isHidden = false;
   @Prop() highlightedCells: ICell[] = [];
   @Prop() height = SCREEN_HEIGHT;
   @Prop() width = SCREEN_WIDTH;
   @State() showBlinkingCells = true;
   @State() screenCells: ICell[][] = [];
+  
+  @Watch('isHidden')
+  hiddenHandler() {
+    if (this.isHidden) {
+      clearInterval(this.interval);
+    } else {
+      this.interval = setInterval(() => this.showBlinkingCells = !this.showBlinkingCells, CELL_BLINK_INTERVAL);
+    }
+  }
 
   componentWillLoad() {
     this.screenCells = this.getEmptyScreenCells();
-    this.interval = setInterval(() => this.showBlinkingCells = !this.showBlinkingCells, CELL_BLINK_INTERVAL);
+    this.hiddenHandler();
   }
 
   disconnectedCallback() {
@@ -50,16 +61,16 @@ export class BrickScreen {
       <brick-cell
         active={isActive}
         highlighted={highlighted}
-        key={`cell_${x}_${y}`}
+        key={`${this.el.id}_cell_${x}_${y}`}
       />
     );
   }
 
   render() {
     return (
-      <Host isHidden={this.hidden}>
+      <Host isHidden={this.isHidden}>
         {this.screenCells.map((row, y) => (
-          <div class="brick-screen-row" key={`row_${y}`}>
+          <div class="brick-screen-row" key={`${this.el.id}_row_${y}`}>
             {row.map(this.renderCell.bind(this))}
           </div>
         ))}

@@ -12,6 +12,7 @@ game-screen {
     .brick-screen-wrapper {
       border: 1.5px solid $color-br-active;
       padding: 5px;
+      overflow: hidden;
 
       & > div {
         display: none;

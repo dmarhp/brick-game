@@ -1,6 +1,4 @@
-import {Block} from "../types";
-import {Direction, ICell} from "@global/types";
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
+import {Direction, Figure, ICell} from "@global/types";
 
 const getIBlock = (direction: Direction): ICell[] => {
   switch (direction) {
@@ -173,49 +171,37 @@ const getZBlock = (direction: Direction): ICell[] => {
   }
 }
 
-const getBlock = (block: Block, direction: Direction = Direction.Up, offset: ICell = {x: 0, y: 0}): ICell[] => {
-  let cells = [];
-  switch (block) {
-    case Block.I:
+export default (figure: Figure, direction: Direction = Direction.Up, offset: ICell = null) => {
+  let cells: ICell[] = [];
+  switch (figure) {
+    case Figure.BlockI:
       cells = getIBlock(direction);
       break;
-    case Block.J:
+    case Figure.BlockJ:
       cells = getJBlock(direction);
       break;
-    case Block.L:
+    case Figure.BlockL:
       cells = getLBlock(direction);
       break;
-    case Block.O:
+    case Figure.BlockO:
       cells = getOBlock();
       break;
-    case Block.S:
+    case Figure.BlockS:
       cells = getSBlock(direction);
       break;
-    case Block.T:
+    case Figure.BlockT:
       cells = getTBlock(direction);
       break;
-    case Block.Z:
+    case Figure.BlockZ:
       cells = getZBlock(direction);
       break;
+    default:
+      return [];
   }
 
-  return cells.map(({x, y}) => ({x: x + offset.x, y: y + offset.y}));
-}
-
-const getInitialOffset = (): ICell => {
-  return {
-    x: SCREEN_WIDTH / 2 - 2,
-    y: SCREEN_HEIGHT,
+  if (!offset) {
+    return;
   }
-}
-const getOffset = (cells: ICell[]): ICell => {
-  const {x} = cells.reduce((min, cell) => (cell.x < min.x ? cell : min), cells[0]);
-  const {y} = cells.reduce((min, cell) => (cell.y < min.y ? cell : min), cells[0]);
-  return {x, y}
-}
 
-export default {
-  getBlock,
-  getInitialOffset,
-  getOffset,
+  return cells.map(({x, y}) => ({x: x + offset.x, y: y + offset.y}))
 }

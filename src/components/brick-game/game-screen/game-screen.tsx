@@ -30,10 +30,12 @@ export class GameScreen {
 
   renderGame() {
     switch (gameStore.state.game) {
-      case Game.Snake:
-        return <game-snake/>;
       case Game.Racing:
         return <game-racing/>;
+      case Game.RowFiller:
+        return <game-row-filler/>;
+      case Game.Snake:
+        return <game-snake/>;
       case Game.Tanks:
         return <game-tanks/>;
       case Game.Tetris:
@@ -53,15 +55,11 @@ export class GameScreen {
             class="brick-screen-wrapper"
             ref={ref => this.brickScreenRef = ref}
           >
-            <div class={{'brick-screen--hidden': view === View.SelectGame}}>
-              <select-game/>
-            </div>
-            <div class={{'brick-screen--hidden': view === View.Game}}>
+            <select-game isHidden={view !== View.SelectGame}/>
+            <div style={{display: view === View.Game ? 'flex' : 'none'}}>
               {this.renderGame()}
             </div>
-            <div class={{'brick-screen--hidden': view === View.ClearScreen}}>
-              <clear-screen/>
-            </div>
+            <clear-screen isHidden={view !== View.ClearScreen}/>
           </div>
           <stats-screen/>
         </div>

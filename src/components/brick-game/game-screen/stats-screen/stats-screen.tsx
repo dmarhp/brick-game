@@ -26,7 +26,7 @@ export class StatsScreen {
             />
           </div>
 
-          <brick-screen width={4} height={4} activeCells={smallBrickScreen}/>
+          <brick-screen id="SecondaryScreen" width={4} height={4} activeCells={smallBrickScreen}/>
 
           <div class="stats-screen__speed-and-level">
             <div>

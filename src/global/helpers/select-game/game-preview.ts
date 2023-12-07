@@ -102,7 +102,44 @@ const tetris: ICell[] = [
   {y: offsetY - 1, x: 3},
   {y: offsetY - 0, x: 2},
   {y: offsetY - 0, x: 3},
+];
 
+const rowFiller: ICell[] = [
+  {y: offsetY - 7, x: 5},
+  {y: offsetY - 7, x: 6},
+  {y: offsetY - 7, x: 7},
+  
+  {y: offsetY - 6, x: 6},
+
+  {y: offsetY - 4, x: 6},
+
+  {y: offsetY - 2, x: 0},
+  {y: offsetY - 2, x: 1},
+  {y: offsetY - 2, x: 2},
+  {y: offsetY - 2, x: 3},
+  {y: offsetY - 2, x: 4},
+  {y: offsetY - 2, x: 5},
+  {y: offsetY - 2, x: 7},
+  {y: offsetY - 2, x: 8},
+  {y: offsetY - 2, x: 9},
+
+  {y: offsetY - 1, x: 0},
+  {y: offsetY - 1, x: 1},
+  {y: offsetY - 1, x: 4},
+  {y: offsetY - 1, x: 5},
+  {y: offsetY - 1, x: 6},
+  {y: offsetY - 1, x: 7},
+  {y: offsetY - 1, x: 8},
+  {y: offsetY - 1, x: 9},
+  
+  {y: offsetY - 0, x: 0},
+  {y: offsetY - 0, x: 1},
+  {y: offsetY - 0, x: 2},
+  {y: offsetY - 0, x: 3},
+  {y: offsetY - 0, x: 5},
+  {y: offsetY - 0, x: 6},
+  {y: offsetY - 0, x: 7},
+  {y: offsetY - 0, x: 9}
 ]
 
 const lock: ICell[] = [
@@ -161,6 +198,8 @@ export const getGamePreview = (game: Game): ICell[] => {
       return tanks;
     case Game.Tetris:
       return tetris
+    case Game.RowFiller:
+      return rowFiller
     case Game.LockedGame:
       return lock;
     default:

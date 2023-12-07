@@ -1,7 +1,8 @@
-import {ICell, View} from "@global/types";
+import {Direction, ICell, View} from "@global/types";
 import {SCREEN_WIDTH} from "@global/constants";
 import globalStore from "@stores/global-store";
 import {commonHelpers} from "@global/helpers/common";
+import {objectHelpers} from "@global/helpers/objects";
 
 const clearRow = (cells: ICell[], row: number) => {
   return cells.filter(({y}) => y !== row);
@@ -11,7 +12,7 @@ const clearScreen = async (cells: ICell[]) => {
   const prevView = globalStore.state.view;
   setView(View.ClearScreen);
   commonHelpers.dispatchCustomEvent('clear-screen.start', {cells});
-  
+
   const eventName = 'clear-screen.finish';
   return new Promise((resolve) => {
     const listener = () => {
@@ -36,17 +37,6 @@ const getRow = (row: number, width = SCREEN_WIDTH) => {
     .map(x => ({x, y: row} as ICell));
 }
 
-const getIndexOfNextRowWithActiveCells = (cells: ICell[], row: number) => {
-  const filteredCells = cells.filter(({y}) => y > row);
-
-  if (filteredCells.length === 0) {
-    return null;
-  }
-
-  const nextRow = filteredCells.reduce((min, cell) => (cell.y < min.y ? cell : min), filteredCells[0]);
-  return nextRow.y;
-}
-
 const isColumnActive = (activeCells: ICell[], col: number) => {
   const colActiveCells = activeCells.filter(({x}) => x === col);
   return colActiveCells.length === SCREEN_WIDTH
@@ -55,6 +45,17 @@ const isColumnActive = (activeCells: ICell[], col: number) => {
 const isRowActive = (activeCells: ICell[], row: number) => {
   const rowActiveCells = activeCells.filter(({y}) => y === row);
   return rowActiveCells.length === SCREEN_WIDTH;
+}
+
+const removeRowAndMoveCells = (cells: ICell[], row: number, direction: Direction = Direction.Down) => {
+  const cellsBelow = cells.filter(c => c.y < row);
+  const cellsAbove = cells.filter(c => c.y > row);
+
+  if (direction === Direction.Up) {
+    return [...cellsAbove, ...objectHelpers.move(cellsBelow, Direction.Up)];
+  } else {
+    return [...cellsBelow, ...objectHelpers.move(cellsAbove, Direction.Down)];
+  }
 }
 
 const setView = (view: View) => {
@@ -69,7 +70,7 @@ export const screenHelpers = {
   clearScreen,
   fillRow,
   getRow,
-  getIndexOfNextRowWithActiveCells,
+  removeRowAndMoveCells,
   isColumnActive,
   isRowActive,
   setView,

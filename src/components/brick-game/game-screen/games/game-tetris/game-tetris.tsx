@@ -1,10 +1,8 @@
 import {Component, h, Listen, State, Watch} from "@stencil/core";
-import {ControlButton, Direction, GameStatus, ICell} from "@global/types";
-import {Block} from "./types";
+import {ControlButton, Direction, Figure, GameStatus, ICell} from "@global/types";
 import helpers from "./helpers";
 import {objectHelpers} from "@global/helpers/objects";
 import {controlsHelpers} from "@global/helpers/controls";
-import tetrisCellHelpers from "./helpers/cells";
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "@global/constants";
 import {commonHelpers} from "@global/helpers/common";
 import {screenHelpers} from "@global/helpers/screen";
@@ -17,11 +15,10 @@ import {gameHelpers} from "@global/helpers/game";
 })
 export class GameTetris {
   @State() activeCells: ICell[] = [];
-  @State() currentBlock: { block: Block, direction: Direction };
-
+  @State() currentBlock: { block: Figure, direction: Direction };
   @State() currentBlockCells: ICell[] = [];
   @State() highlightedCells: ICell[] = [];
-  @State() nextBlock: Block;
+  @State() nextBlock: Figure;
 
   @Watch('activeCells')
   @Watch('currentBlockCells')
@@ -105,19 +102,9 @@ export class GameTetris {
     }
 
     gameStore.state.score += completedRows.length;
-    let updatedActiveCells = [...this.activeCells];
-
-    for (let i = 0; i < SCREEN_HEIGHT; i++) {
-      const rowIsEmpty = updatedActiveCells.every(c => c.y !== i)
-      if (rowIsEmpty) {
-        const nextActiveRow = screenHelpers.getIndexOfNextRowWithActiveCells(updatedActiveCells, i);
-        if (nextActiveRow) {
-          updatedActiveCells = updatedActiveCells.map(c => c.y === nextActiveRow ? {...c, y: i} : c);
-        }
-      }
-    }
-
-    this.activeCells = updatedActiveCells;
+    let activeCells = [...this.activeCells];
+    completedRows.forEach(i => activeCells = screenHelpers.removeRowAndMoveCells(activeCells, i));
+    this.activeCells = activeCells
   }
 
   getNextBlock(initial = false) {
@@ -130,7 +117,7 @@ export class GameTetris {
 
   rotateBlock() {
     const direction = directionHelpers.rotateRight(this.currentBlock.direction);
-    const offset = tetrisCellHelpers.getOffset(this.currentBlockCells);
+    const offset = helpers.getOffset(this.currentBlockCells);
     const updatedCells = helpers.getBlockCells(this.currentBlock.block, direction, offset);
     if (objectHelpers.isVisibleOrAbove(updatedCells)) {
       this.currentBlockCells = updatedCells;
@@ -142,6 +129,7 @@ export class GameTetris {
     const activeCells: ICell[] = [...this.currentBlockCells, ...this.activeCells];
     return (
       <brick-screen
+        id="GameTetris"
         activeCells={activeCells}
         highlightedCells={this.highlightedCells}
       />
