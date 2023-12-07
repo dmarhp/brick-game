@@ -171,37 +171,23 @@ const getZBlock = (direction: Direction): ICell[] => {
   }
 }
 
-export default (figure: Figure, direction: Direction = Direction.Up, offset: ICell = null) => {
-  let cells: ICell[] = [];
+export default (figure: Figure, direction: Direction = Direction.Up): ICell[] => {
   switch (figure) {
     case Figure.BlockI:
-      cells = getIBlock(direction);
-      break;
+      return getIBlock(direction);
     case Figure.BlockJ:
-      cells = getJBlock(direction);
-      break;
+      return getJBlock(direction);
     case Figure.BlockL:
-      cells = getLBlock(direction);
-      break;
+      return getLBlock(direction);
     case Figure.BlockO:
-      cells = getOBlock();
-      break;
+      return getOBlock();
     case Figure.BlockS:
-      cells = getSBlock(direction);
-      break;
+      return getSBlock(direction);
     case Figure.BlockT:
-      cells = getTBlock(direction);
-      break;
+      return getTBlock(direction);
     case Figure.BlockZ:
-      cells = getZBlock(direction);
-      break;
+      return getZBlock(direction);
     default:
       return [];
   }
-
-  if (!offset) {
-    return;
-  }
-
-  return cells.map(({x, y}) => ({x: x + offset.x, y: y + offset.y}))
 }

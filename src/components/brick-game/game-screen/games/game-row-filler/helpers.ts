@@ -17,7 +17,7 @@ const getInitialFilledRows = () => {
 
 const getPlayer = (position: number) => {
   const offset = {x: position - 1, y: 0};
-  return figureHelpers.get(Figure.BlockT, Direction.Up, offset);
+  return figureHelpers.get(Figure.BlockT, offset, Direction.Up);
 }
 
 const getRandomlyFilledRow = (y: number = SCREEN_HEIGHT - 1, min: number = 5, max: number = 8): ICell[] => {

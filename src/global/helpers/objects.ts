@@ -5,6 +5,10 @@ const getCell = (obj: ICell[] = [], x:number, y: number) => {
   return obj.find(c => c.x === x && c.y === y);
 }
 
+const isHiddenOrAbove = (obj: ICell[]) => {
+  return !obj.some(cellHelpers.isVisibleOrAbove);
+}
+
 const isObjectCell = (obj: ICell[] = [], cell: ICell) => {
   return obj.some((c) => cellHelpers.isEqual(cell, c));
 }
@@ -34,6 +38,7 @@ const move = (obj: ICell[], direction: Direction, distance: number = 1) => {
 
 export const objectHelpers = {
   getCell,
+  isHiddenOrAbove,
   isObjectCell,
   isOutsideScreen,
   isOverlapping,

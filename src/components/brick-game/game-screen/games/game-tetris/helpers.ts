@@ -5,13 +5,13 @@ import {gameHelpers} from "@global/helpers/game";
 import {figureHelpers} from "@global/helpers/figures";
 
 const getBlockCells = (block: Figure, direction = Direction.Up, offset = getInitialOffset()) => {
-  return figureHelpers.get(block, direction, offset);
+  return figureHelpers.get(block, offset, direction);
 }
 
 const getInitialOffset = (): ICell => {
   return {
     x: SCREEN_WIDTH / 2 - 2,
-    y: SCREEN_HEIGHT,
+    y: SCREEN_HEIGHT - 1,
   }
 }
 

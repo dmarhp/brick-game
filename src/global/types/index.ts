@@ -4,6 +4,15 @@ export enum Axis {
   Y
 }
 
+export interface IBorders {
+  left: ICell[];
+  right: ICell[];
+  top: ICell[];
+  bottom: ICell[]
+}
+
+export type BorderPatter = boolean[];
+
 export interface ICell {
   x: number;
   y: number;
@@ -29,6 +38,23 @@ export enum ControlButton {
   Pause = 'pause',
 }
 
+export enum Figure {
+  None = 0,
+  BlockI,
+  BlockJ,
+  BlockL,
+  BlockO,
+  BlockS,
+  BlockT,
+  BlockZ,
+  Car,
+  CarPlayer,
+  Crash1,
+  Crash2,
+  Tank,
+  TankPlayer,
+}
+
 export enum Game {
   None,
   Snake,
@@ -47,11 +73,6 @@ export interface IGameCatalogItem {
   locked?: boolean;
 }
 
-export enum LetterPosition {
-  Top = 'top',
-  Bottom = 'bottom'
-}
-
 export enum GameStatus {
   NewGame = 'newGame',
   Play = 'play',
@@ -59,12 +80,17 @@ export enum GameStatus {
   Lose = 'lose'
 }
 
-export type Letter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
-
 export enum Icon {
   Music = 'music',
   Pause = 'pause',
   Poo = 'poo'
+}
+
+export type Letter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
+
+export enum LetterPosition {
+  Top = 'top',
+  Bottom = 'bottom'
 }
 
 export enum View {
@@ -72,18 +98,4 @@ export enum View {
   ClearScreen,
   Game,
   SelectGame,
-}
-
-export enum Figure {
-  BlockI = 'blockI',
-  BlockJ = 'blockJ',
-  BlockL = 'blockL',
-  BlockO = 'blockO',
-  BlockS = 'blockS',
-  BlockT = 'blockT',
-  BlockZ = 'blockZ',
-  Car = 'car',
-  Car2 = 'car2',
-  Tank = 'tank',
-  Tank2 = 'tank2',
 }

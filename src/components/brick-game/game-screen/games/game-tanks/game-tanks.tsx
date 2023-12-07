@@ -3,7 +3,6 @@ import {ControlButton, Direction, GameStatus} from "@global/types";
 import {controlsHelpers} from "@global/helpers/controls";
 import store from "../../../../../stores/game-tanks-store";
 import helpers from "./helpers";
-import {tankCellHelpers} from "./helpers/cells";
 import {commonHelpers} from "@global/helpers/common";
 import {gameHelpers} from "@global/helpers/game";
 import {screenHelpers} from "@global/helpers/screen";
@@ -56,7 +55,7 @@ export class GameTanks {
   }
 
   updatePlayersCells() {
-    store.state.player.cells = tankCellHelpers.getTank(store.state.player);
+    store.state.player.cells = helpers.getTankCells(store.state.player);
     store.state.player.id = 'player';
   }
 
