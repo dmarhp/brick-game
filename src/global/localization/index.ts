@@ -1,17 +1,21 @@
 export const LOCALIZATION = {
   brickGame: 'Brick game',
   down: 'Down',
+  exit: 'Exit',
   hiScorePrefix: 'Hi-',
   left: 'Left',
   level: 'Level',
+  pause: 'Pause',
   racing: 'Racing',
   right: 'Right',
   rotate: 'Rotate',
   rowFiller: 'Row filler',
+  settings: 'Settings',
   score: 'Score',
   snake: 'Snake',
+  sound: 'Sound',
   speed: 'Speed',
   tanks: 'Tanks',
   tetris: 'Tetris',
   up: 'Up',
-}
+};

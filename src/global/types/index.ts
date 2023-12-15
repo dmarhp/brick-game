@@ -29,13 +29,16 @@ export enum Direction {
 }
 
 export enum ControlButton {
-  None = 'none',
-  Up = 'up',
-  Down = 'down',
-  Left = 'left',
-  Right = 'right',
-  Rotate = 'rotate',
-  Pause = 'pause',
+  None = 0,
+  Up,
+  Down,
+  Left,
+  Right,
+  Rotate,
+  Pause,
+  Sound,
+  Settings,
+  Exit
 }
 
 export enum Figure {
@@ -74,23 +77,24 @@ export interface IGameCatalogItem {
 }
 
 export enum GameStatus {
-  NewGame = 'newGame',
-  Play = 'play',
-  Win = 'win',
-  Lose = 'lose'
+  NewGame,
+  Play,
+  Win,
+  Lose
 }
 
 export enum Icon {
-  Music = 'music',
-  Pause = 'pause',
-  Poo = 'poo'
+  None = 0,
+  Music,
+  Pause,
+  Poo
 }
 
 export type Letter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
 
 export enum LetterPosition {
-  Top = 'top',
-  Bottom = 'bottom'
+  Top,
+  Bottom
 }
 
 export enum View {

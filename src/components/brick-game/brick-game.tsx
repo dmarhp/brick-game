@@ -10,8 +10,7 @@ export class BrickGame {
       <Host>
         <div class="console">
           <console-screen-part/>
-          <console-controls/>
-          
+          <console-controls-part/>
         </div>
       </Host>
     );

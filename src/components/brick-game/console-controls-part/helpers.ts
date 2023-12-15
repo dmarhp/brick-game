@@ -16,10 +16,8 @@ const getControlButtonFromKeyBoardEvent = (event: KeyboardEvent): ControlButton 
       return ControlButton.Right;
     case ' ':
       return ControlButton.Rotate;
-      
     case 'p':
       return ControlButton.Pause;
-      
     default:
       return ControlButton.None;
   }
@@ -37,5 +35,5 @@ const isDirectionOrRotateButton = (button: ControlButton) => {
 
 export default {
   getControlButtonFromKeyBoardEvent,
-  isDirectionOrRotateButton,
+  isDirectionOrRotateButton
 }
