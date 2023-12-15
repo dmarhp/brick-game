@@ -8,6 +8,7 @@ game-screen {
     padding: 8px 0 8px 8px;
     background-color: $color-br-background;
     display: flex;
+    border: 1px solid $color-br-active;
 
     .brick-screen-wrapper {
       border: 1.5px solid $color-br-active;

@@ -1,4 +1,5 @@
 export const LOCALIZATION = {
+  brickGame: 'Brick game',
   down: 'Down',
   hiScorePrefix: 'Hi-',
   left: 'Left',

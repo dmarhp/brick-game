@@ -8,6 +8,10 @@ brick-screen {
     display: none;
   }
   
+  &[transparent] {
+    background-color: transparent;
+  }
+  
   .brick-screen-row {
     display: flex;
     gap: 2px;

@@ -7,12 +7,14 @@ import {Component, h, Host, Prop} from "@stencil/core";
 export class BrickCell {
   @Prop() active = false;
   @Prop() highlighted = false;
+  @Prop() transparent = false;
   
   render() {
     return (
       <Host
         active={this.active}
         highlighted={this.highlighted}
+        transparent={this.transparent}
       />
     );
   }

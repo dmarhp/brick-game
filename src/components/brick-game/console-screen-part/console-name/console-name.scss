@@ -1,0 +1,26 @@
+console-name {
+  display: flex;
+  position: absolute;
+  top: calc($screen-border-width * -2);
+  width: calc(100% - $screen-border-width * 2);
+  justify-content: center;
+
+  span {
+    font-size: 24px;
+    text-transform: uppercase;
+    background-color: $console-color;
+    padding: 0 $screen-border-width;
+  }
+
+  .dots {
+    display: flex;
+    gap: $screen-border-width;
+    margin: 0 $screen-border-width;
+
+    .dot {
+      display: flex;
+      width: $screen-border-width;
+      background-color: $console-color;
+    }
+  }
+}

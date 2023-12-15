@@ -4,7 +4,6 @@ brick-cell {
   height: 14px;
   border: 1.5px solid $color-br-inactive;
   box-sizing: border-box;
-  background-color: $color-br-background;
   transition: all ease 0.05s;
 
   &:after {
@@ -20,6 +19,14 @@ brick-cell {
     border-color: $color-br-highlighted;
     &:after {
       background-color: $color-br-highlighted;
+    }
+  }
+
+  &[transparent] {
+    border-color: transparent;
+
+    &:after {
+      background-color: transparent;
     }
   }
 

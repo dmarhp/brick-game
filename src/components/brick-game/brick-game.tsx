@@ -8,10 +8,11 @@ export class BrickGame {
   render() {
     return (
       <Host>
-        <div>
-          <game-screen/>
+        <div class="console">
+          <console-screen-part/>
+          <console-controls/>
+          
         </div>
-        <game-controls/>
       </Host>
     );
   }

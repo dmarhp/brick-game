@@ -1,0 +1,16 @@
+console-screen-part {
+  display: flex;
+  align-items: center;
+
+  .console__screen-borders {
+    padding: 16px;
+    border: $screen-border-width solid $color-br-active;
+    position: relative;
+
+    .console__screen {
+      border-color: #987f0f #fae36c #fae36c #987f0f;
+      border-style: solid;
+      border-width: 5px;
+    }
+  }
+}

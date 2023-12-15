@@ -5,7 +5,7 @@ import {LOCALIZATION} from "@global/localization";
 import gameStore from "@stores/game-store";
 
 @Component({
-  tag: 'game-controls',
+  tag: 'console-controls',
   styleUrl: 'game-controls.scss'
 })
 export class GameControls {

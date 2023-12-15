@@ -15,15 +15,17 @@ export class BrickScreen {
   
   @Prop() activeCells: ICell[] = [];
   @Prop() isHidden = false;
+  @Prop() isStatic = false;
   @Prop() highlightedCells: ICell[] = [];
   @Prop() height = SCREEN_HEIGHT;
   @Prop() width = SCREEN_WIDTH;
+  @Prop() transparent = false;
   @State() showBlinkingCells = true;
   @State() screenCells: ICell[][] = [];
   
   @Watch('isHidden')
   hiddenHandler() {
-    if (this.isHidden) {
+    if (this.isHidden || this.isStatic) {
       clearInterval(this.interval);
     } else {
       this.interval = setInterval(() => this.showBlinkingCells = !this.showBlinkingCells, CELL_BLINK_INTERVAL);
@@ -61,6 +63,7 @@ export class BrickScreen {
       <brick-cell
         active={isActive}
         highlighted={highlighted}
+        transparent={this.transparent}
         key={`${this.el.id}_cell_${x}_${y}`}
       />
     );
@@ -68,7 +71,7 @@ export class BrickScreen {
 
   render() {
     return (
-      <Host isHidden={this.isHidden}>
+      <Host isHidden={this.isHidden} transparent={this.transparent}>
         {this.screenCells.map((row, y) => (
           <div class="brick-screen-row" key={`${this.el.id}_row_${y}`}>
             {row.map(this.renderCell.bind(this))}
