@@ -85,7 +85,7 @@ export class GameTetris {
   async removeCompletedRows() {
     const completedRows: number[] = [];
 
-    for (let i = 0; i < SCREEN_HEIGHT; i++) {
+    for (let i = SCREEN_HEIGHT; i >= 0; i--) {
       if (screenHelpers.isRowActive(this.activeCells, i)) {
         completedRows.push(i);
       }
