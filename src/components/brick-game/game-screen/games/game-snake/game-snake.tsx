@@ -97,7 +97,7 @@ export class GameSnake {
   }
 
   async pauseHandler() {
-    if (!gameStore.state.pause) {
+    if (gameHelpers.canContinueGame()) {
       await this.moveSnake();
     }
   }

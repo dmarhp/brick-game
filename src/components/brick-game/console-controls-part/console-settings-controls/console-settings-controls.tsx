@@ -24,7 +24,7 @@ export class ConsoleSettingsControls {
         <console-control-button
           text={LOCALIZATION.sound}
           size="sm"
-          onClick={() => this.clickHandler(ControlButton.Sound)}
+          onClick={() => this.clickHandler(ControlButton.Sounds)}
         />
         <console-control-button
           text={LOCALIZATION.settings}

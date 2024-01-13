@@ -37,6 +37,7 @@ export class GameRacing {
 
   componentWillLoad() {
     this.getInitialGameState();
+    gameStore.onChange('pause', this.pauseHandler.bind(this));
   }
 
   async driveButtonHandler() {
@@ -108,6 +109,12 @@ export class GameRacing {
       i++;
     }
     this.player = {...this.player, cells: []};
+  }
+
+  async pauseHandler() {
+    if (gameHelpers.canContinueGame()) {
+      await this.drive();
+    }
   }
 
   getActiveCells() {

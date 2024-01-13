@@ -7,6 +7,7 @@ import {screenHelpers} from "@global/helpers/screen";
 import {objectHelpers} from "@global/helpers/objects";
 import {commonHelpers} from "@global/helpers/common";
 import gameStore from "@stores/game-store";
+import {gameHelpers} from "@global/helpers/game";
 
 @Component({
   tag: 'game-row-filler'
@@ -77,7 +78,7 @@ export class GameRowFiller {
 
   async handleGameOver() {
     const player = helpers.getPlayer(this.position);
-    if (!objectHelpers.isOutsideScreen(this.activeCells) && !objectHelpers.isOverlapping(this.activeCells, player)) {
+    if (objectHelpers.isVisibleOrAbove(this.activeCells) && !objectHelpers.isOverlapping(this.activeCells, player)) {
       return;
     }
 
@@ -106,13 +107,13 @@ export class GameRowFiller {
   }
 
   insertNewRow() {
-    if (gameStore.state.gameStatus === GameStatus.Lose) {
-      return
+    const {gameStatus, pause} = gameStore.state;
+    
+    if (gameStatus === GameStatus.Play && !pause) {
+      const newRow = helpers.getRandomlyFilledRow();
+      const updatedActiveCells = objectHelpers.move(this.activeCells, Direction.Down);
+      this.activeCells = [...updatedActiveCells, ...newRow];
     }
-
-    const newRow = helpers.getRandomlyFilledRow();
-    const updatedActiveCells = objectHelpers.move(this.activeCells, Direction.Down);
-    this.activeCells = [...updatedActiveCells, ...newRow];
 
     setTimeout(() => {
       this.insertNewRow()
@@ -161,6 +162,7 @@ export class GameRowFiller {
   }
 
   shoot() {
+    gameHelpers.start();
     const bullet = {x: this.position, y: 0};
     if (this.bullets.every(b => !cellHelpers.isEqual(b, bullet))) {
       this.bullets = [...this.bullets, bullet];

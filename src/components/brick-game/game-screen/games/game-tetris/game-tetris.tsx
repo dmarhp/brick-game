@@ -43,6 +43,13 @@ export class GameTetris {
   async componentWillLoad() {
     this.getNextBlock(true)
     await this.lowerBlock();
+    gameStore.onChange('pause', this.pauseHandler.bind(this));
+  }
+
+  async pauseHandler() {
+    if (gameHelpers.canContinueGame()) {
+      await this.lowerBlock();
+    }
   }
 
   async finishGame() {
@@ -54,7 +61,7 @@ export class GameTetris {
   }
 
   async lowerBlock() {
-    if (gameHelpers.isLoser()) {
+    if (gameHelpers.isLoser() || gameHelpers.isPause()) {
       return;
     }
 

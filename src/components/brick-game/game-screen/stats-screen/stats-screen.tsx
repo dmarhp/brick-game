@@ -2,6 +2,7 @@ import {Component, h, Host} from "@stencil/core";
 import {Icon} from "@global/types";
 import {LOCALIZATION} from "@global/localization";
 import gameStore from "@stores/game-store";
+import globalStore from "@stores/global-store";
 
 @Component({
   tag: 'stats-screen',
@@ -11,6 +12,7 @@ export class StatsScreen {
   render() {
     const {smallBrickScreen, level, pause, score, speed} = gameStore.state;
 
+    const {sounds} = globalStore.state;
     return (
       <Host class="stats-screen">
         <div class="stats-screen__main-controls">
@@ -51,8 +53,8 @@ export class StatsScreen {
           <icon-provider icon={Icon.Poo}/>
 
         </div>
-        <div class="stats-screen__music-and-pause">
-          <icon-provider icon={Icon.Music} class={{'active': false}}/>
+        <div class="stats-screen__sounds-and-pause">
+          <icon-provider icon={Icon.Sounds} class={{'active': sounds}}/>
           <icon-provider icon={Icon.Pause} class={{'active': pause}}/>
         </div>
       </Host>

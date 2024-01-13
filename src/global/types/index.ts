@@ -36,7 +36,7 @@ export enum ControlButton {
   Right,
   Rotate,
   Pause,
-  Sound,
+  Sounds,
   Settings,
   Exit
 }
@@ -85,9 +85,9 @@ export enum GameStatus {
 
 export enum Icon {
   None = 0,
-  Music,
   Pause,
-  Poo
+  Poo,
+  Sounds,
 }
 
 export type Letter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';

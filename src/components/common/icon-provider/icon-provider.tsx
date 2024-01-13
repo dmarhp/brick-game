@@ -1,7 +1,7 @@
 import {Component, h, Host, Prop} from "@stencil/core";
 import {Icon} from "@global/types";
 
-import music from "./assets/music.svg";
+import sounds from "./assets/sounds.svg";
 import pause from "./assets/pause.svg";
 import poo from "./assets/poo.svg";
 
@@ -14,8 +14,8 @@ export class IconProvider {
 
   getIcon() {
     switch (this.icon) {
-      case Icon.Music:
-        return music;
+      case Icon.Sounds:
+        return sounds;
       case Icon.Pause:
         return pause
       case Icon.Poo:

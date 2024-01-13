@@ -18,6 +18,10 @@ const getControlButtonFromKeyBoardEvent = (event: KeyboardEvent): ControlButton 
       return ControlButton.Rotate;
     case 'p':
       return ControlButton.Pause;
+    case 'o':
+      return ControlButton.Sounds;
+    case 'Escape': 
+      return ControlButton.Exit;
     default:
       return ControlButton.None;
   }

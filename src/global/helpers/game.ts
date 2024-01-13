@@ -7,11 +7,17 @@ const canStart = () => {
   return gameStore.state.gameStatus === GameStatus.NewGame;
 }
 
+const canContinueGame = () => {
+  const {pause, gameStatus} = gameStore.state;
+  return !pause && gameStatus === GameStatus.Play;
+}
+
 const exit = () => {
   // todo: update hi-score
   gameStore.state.game = Game.None;
   gameStore.state.score = 0;
   gameStore.state.smallBrickScreen = [];
+  gameStore.state.pause = false;
   globalStore.state.view = View.SelectGame;
 }
 
@@ -48,6 +54,22 @@ const isLoser = () => {
   return gameStore.state.gameStatus === GameStatus.Lose;
 }
 
+const isPause = () => {
+  return gameStore.state.pause;
+}
+
+const renderLives = () => {
+  const game = GAME_CATALOG[gameStore.state.game];
+  if (!game || game.lives === 1) {
+    gameStore.state.smallBrickScreen = [];
+  }
+  gameStore.state.smallBrickScreen = getLives();
+}
+
+const renderNextObject = (obj: ICell[]) => {
+  gameStore.state.smallBrickScreen = obj;
+}
+
 const setStatus = (gameStatus: GameStatus) => {
   gameStore.state.gameStatus = gameStatus;
 }
@@ -65,29 +87,31 @@ const startNewGame = (selectedGame: Game, speed: number) => {
   }
 }
 
-const renderLives = () => {
-  const game = GAME_CATALOG[gameStore.state.game];
-  if (!game || game.lives === 1) {
-    gameStore.state.smallBrickScreen = [];
+const togglePause = () => {
+  if (gameStore.state.game !== Game.None) {
+    gameStore.state.pause = !gameStore.state.pause;
   }
-  gameStore.state.smallBrickScreen = getLives();
 }
 
-const renderNextObject = (obj: ICell[]) => {
-  gameStore.state.smallBrickScreen = obj;
+const toggleSounds = () => {
+  globalStore.state.sounds = !globalStore.state.sounds;
 }
 
 export const gameHelpers = {
   canStart,
+  canContinueGame,
   exit,
   handleLose,
   hasLives,
   isFinished,
   isLastLive,
   isLoser,
+  isPause,
+  renderLives,
+  renderNextObject,
   setStatus,
   start,
   startNewGame,
-  renderLives,
-  renderNextObject,
+  togglePause,
+  toggleSounds,
 }

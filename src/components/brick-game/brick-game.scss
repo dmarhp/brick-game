@@ -16,29 +16,11 @@ brick-game {
     box-shadow: inset 0 0 10px #fff;
     border-radius: 20px;
   }
-}
 
-.brick_game {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  flex-direction: column;
-  gap: 20px;
-
-  &__console {
-    background: $console-color;
-    box-shadow: inset 0 0 10px #fff;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-
-    &__header {
-      height: 40px;
+  @media (max-width: 480px) {
+    .console {
+      width: 100%;
+      gap: 0;
     }
-  }
-
-  .game-console__screen-part {
-    display: flex;
   }
 }

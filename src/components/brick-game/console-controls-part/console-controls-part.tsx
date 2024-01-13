@@ -2,6 +2,7 @@ import {Component, Event, EventEmitter, h, Host, Listen} from "@stencil/core";
 import {ControlButton} from "@global/types";
 import helpers from "./helpers";
 import gameStore from "@stores/game-store";
+import {gameHelpers} from "@global/helpers/game";
 
 @Component({
   tag: 'console-controls-part',
@@ -13,19 +14,29 @@ export class ConsoleControlsPart {
   @Listen('keydown', {target: 'window'})
   keydownHandler(event: KeyboardEvent) {
     const button = helpers.getControlButtonFromKeyBoardEvent(event);
-    if (button === ControlButton.Pause) {
-      gameStore.state.pause = !gameStore.state.pause;
-      return;
-    }
-
-    this.controlButtonClickHandler(button);
-    if (helpers.isDirectionOrRotateButton(button)) {
-      gameStore.state.pause = false;
+    if (button !== ControlButton.None) {
+      this.controlButtonClickHandler(button);
     }
   }
 
   controlButtonClickHandler(button: ControlButton) {
-    this.controlButtonClick.emit(button);
+    if (helpers.isDirectionOrRotateButton(button)) {
+      gameStore.state.pause = false;
+    }
+
+    switch (button) {
+      case ControlButton.Exit:
+        gameHelpers.exit();
+        return;
+      case ControlButton.Pause:
+        gameHelpers.togglePause();
+        return;
+      case ControlButton.Sounds:
+        gameHelpers.toggleSounds();
+        return;
+      default:
+        this.controlButtonClick.emit(button);
+    }
   }
 
   render() {

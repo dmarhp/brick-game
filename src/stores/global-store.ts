@@ -3,14 +3,14 @@ import {createStore} from "@stencil/store";
 
 interface IGlobalStore {
   selectedMenuItem: Game;
-  music: boolean;
+  sounds: boolean;
   view: View;
 }
 
 const store = createStore<IGlobalStore>({
-  music: false,
-  view: View.SelectGame,
-  selectedMenuItem: Game.None
+  selectedMenuItem: Game.None,
+  sounds: false,
+  view: View.SelectGame
 });
 
 export default store;
