@@ -1,7 +1,7 @@
 {
   "name": "brick-game",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Stencil Ionic App Starter",
   "scripts": {
     "build": "stencil build",
@@ -11,18 +11,16 @@
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@stencil/core": "^3.3.0",
-    "@stencil/store": "^2.0.9",
-    "@types/jest": "~27.0.3",
-    "ionicons": "^7.1.1",
-    "jest": "~27.0.3",
-    "jest-cli": "~27.4.5",
-    "nanoid": "^5.0.3",
-    "puppeteer": "^20.4.0"
+    "@stencil/core": "^4.43.3",
+    "@stencil/store": "^2.2.2",
+    "@types/jest": "~30.0.0",
+    "jest": "~30.3.0",
+    "jest-cli": "~30.3.0",
+    "nanoid": "^5.1.7"
   },
   "license": "MIT",
   "dependencies": {
-    "@stencil/sass": "^3.0.5",
+    "@stencil/sass": "^3.2.3",
     "stencil-inline-svg": "^1.1.0"
   }
 }

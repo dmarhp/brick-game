@@ -1,5 +1,5 @@
-@import "variables";
-@import "reset";
+@forward "variables";
+@use "reset";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,300&display=swap');
 
